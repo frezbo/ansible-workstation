@@ -68,6 +68,9 @@
     - name: Setup go
       include_tasks: golang.yml
 
+    - name: Setup pulumi
+      include_tasks: pulumi.yml
+
     - name: gsettings
       gsetting:
         key: "{{ item.key }}"

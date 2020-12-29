@@ -1,0 +1,32 @@
+- name: Find pulumi latest release
+  uri:
+    url: https://www.pulumi.com/latest-version
+    return_content: true
+  register: pulumi_remote_info
+
+- name: Get local pulumi version
+  command:
+    argv:
+      - "/home/{{ user }}/.local/bin/pulumi/pulumi"
+      - version
+  register: pulumi_local_info
+
+- name: set pulumi metadata
+  set_fact:
+    pulumi_remote_version: "v{{ pulumi_remote_info.content }}"
+    pulumi_local_version: "{{ pulumi_local_info.stdout }}"
+
+- name: "Delete old pulumi version {{ pulumi_local_version }}"
+  file:
+    path: "/home/{{ user }}/.local/bin/pulumi"
+    state: absent
+  when: pulumi_local_version != pulumi_remote_version
+
+- name: "Unarchive pulumi {{ pulumi_remote_version }} local: {{ pulumi_local_version }}"
+  unarchive:
+    src: "https://get.pulumi.com/releases/sdk/pulumi-v{{ pulumi_remote_version }}-linux-x64.tar.gz"
+    dest: "/home/{{ user }}/.local/bin"
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  when: pulumi_local_version != pulumi_remote_version
