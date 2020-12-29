@@ -1,0 +1,22 @@
+- name: "Add {{ package }} apt-key"
+  become: yes
+  apt_key:
+    url: "{{ repo_key }}"
+    state: present
+    keyserver: "{{ keyserver }}"
+    id: "{{ keyid }}"
+
+- name: "Add {{ package }} repository"
+  become: yes
+  apt_repository:
+    repo: "{{ repo }}"
+    state: present
+    filename: "{{ package }}"
+    update_cache: yes
+
+- name: "Install {{ package }}"
+  become: yes
+  apt:
+    name: "{{ package }}"
+    state: latest
+    update_cache: yes

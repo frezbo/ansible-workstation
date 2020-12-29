@@ -1,0 +1,6 @@
+[submodule "submodules/dconf"]
+	path = submodules/dconf
+	url = https://github.com/jistr/ansible-dconf.git
+[submodule "submodules/gsetting"]
+	path = submodules/gsetting
+	url = https://github.com/jistr/ansible-gsetting.git

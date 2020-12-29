@@ -1,0 +1,19 @@
+- name: Create fzf directory
+  file:
+    path: "/home/{{ user }}/.fzf"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: Create fzf dotfiles
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  with_items:
+    - url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash
+      dest: "/home/{{ user }}/.fzf/key-bindings.bash"
+    - url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.bash
+      dest: "/home/{{ user }}/.fzf/completion.bash"

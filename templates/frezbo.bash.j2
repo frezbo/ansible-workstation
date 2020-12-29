@@ -1,0 +1,30 @@
+# shellcheck shell=bash
+powerline-daemon -q
+
+# shellcheck disable=SC2034
+POWERLINE_BASH_CONTINUATION=1
+# shellcheck disable=SC2034
+POWERLINE_BASH_SELECT=1
+
+# shellcheck source=/usr/share/powerline/bindings/bash/powerline.sh
+. /usr/share/powerline/bindings/bash/powerline.sh
+
+# local path
+PATH=~/.local/bin/:${PATH}
+
+# fzf
+# shellcheck source=/home/frezbo/.fzf.bash
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# GO PATH
+PATH=~/.local/bin/go/bin:${PATH}
+GOPATH=~/work/golang
+
+export GOPATH
+export PATH
+
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+alias p='pushd .'
+alias g='popd'
+alias d='dirs -v'

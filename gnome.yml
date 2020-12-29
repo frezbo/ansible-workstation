@@ -1,0 +1,44 @@
+- name: "Get gnome extension version"
+  command:
+    argv:
+      - gnome-extensions
+      - version
+  register: gnome_version_info
+  run_once: true
+
+- name: "Get Gnome Shell extension info for {{ id }}"
+  uri:
+    url: https://extensions.gnome.org/extension-info/?pk={{ id }}&shell_version={{ gnome_version_info.stdout }}
+    return_content: true
+  register: gnome_extension_info
+  
+- name: "Get installed Gnome extensions"
+  command:
+    argv:
+      - gnome-extensions
+      - list
+  register: gnome_installed_extensions_info
+  run_once: true
+
+- name: "Download gnome extension {{ gnome_extension_info.json.name }}"
+  get_url:
+    url: "https://extensions.gnome.org{{ gnome_extension_info.json.download_url }}"
+    dest: "/tmp/{{ gnome_extension_info.json.uuid }}.zip"
+  when: gnome_extension_info.json.uuid not in gnome_installed_extensions_info.stdout_lines
+
+- name: "Gnome extension {{ gnome_extension_info.json.name }} directory"
+  file:
+    path: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ gnome_extension_info.json.uuid }}"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: "Unzip Gnome extension {{ gnome_extension_info.json.name }}"
+  unarchive:
+    src: "/tmp/{{ gnome_extension_info.json.uuid }}.zip"
+    dest: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ gnome_extension_info.json.uuid }}"
+    creates: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ gnome_extension_info.json.uuid }}/metadata.json"
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"

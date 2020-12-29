@@ -1,0 +1,168 @@
+- name: Setup workstation
+  hosts: all
+
+  tasks:
+    - name: "Install external packages"
+      vars:
+        package: "{{ item.package }}"
+        repo_key: "{{ item.key | default(omit) }}"
+        repo: "{{ item.repo }}"
+        keyserver: "{{ item.keyserver | default(omit) }}"
+        keyid: "{{ item.keyid | default(omit) }}"
+      include_tasks: external-packages.yml
+      with_items:
+        - package: enpass
+          repo: "deb https://apt.enpass.io/ stable main"
+          key: "https://apt.enpass.io/keys/enpass-linux.key"
+        - package: codium
+          repo: "deb [signed-by=/etc/apt/trusted.gpg] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main"
+          key: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
+        - package: terraform
+          repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+          key: "https://apt.releases.hashicorp.com/gpg"
+        - package: kubectl
+          repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+          key: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+        - package: signal-desktop
+          repo: "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main"
+          key: "https://updates.signal.org/desktop/apt/keys.asc"
+        - package: git
+          repo: "deb http://ppa.launchpad.net/git-core/ppa/ubuntu {{ ansible_distribution_release }} main"
+          keyserver: keyserver.ubuntu.com
+          keyid: E1DD270288B4E6030699E45FA1715D88E1DF1F24
+
+    - name: Install xclip
+      become: yes
+      apt:
+        name: xclip
+        state: latest
+        update_cache: yes
+
+    - name: Setup powerline
+      include_tasks: powerline.yml
+
+    - name: Setup Mattermost
+      include_tasks: mattermost.yml
+
+    - name: Setup Gnome extensions
+      vars:
+        id: "{{ item }}"
+      include_tasks: gnome.yml
+      with_items:
+        - 779
+        - 7
+    
+    - name: Setup fzf
+      include_tasks: fzf.yml
+
+    - name: render bash dotfile
+      template:
+        src: frezbo.bash.j2
+        dest: "/home/{{ user }}/.frezbo.bash"
+
+    - name: manage bash dotfiles
+      blockinfile:
+        path: "/home/{{ user }}/.bashrc"
+        content: ". ~/.frezbo.bash"
+
+    - name: Setup go
+      include_tasks: golang.yml
+
+    - name: gsettings
+      gsetting:
+        key: "{{ item.key }}"
+        value: "{{ item.value }}"
+      with_items:
+        - key: org.gnome.desktop.interface.clock-format
+          value: "'24h'"
+        - key: org.gnome.desktop.interface.clock-show-seconds
+          value: "true"
+        - key: org.gnome.desktop.interface.clock-show-weekday
+          value: "true"
+        - key: org.gnome.desktop.interface.show-battery-percentage
+          value: "true"
+        - key: org.gnome.desktop.peripherals.mouse.natural-scroll
+          value: "true"
+        - key: org.gnome.desktop.peripherals.mouse.speed
+          value: "1.0"
+        - key: org.gnome.desktop.peripherals.touchpad.natural-scroll
+          value: "true"
+        - key: org.gnome.desktop.peripherals.touchpad.speed
+          value: "1.0"
+        - key: org.gnome.desktop.peripherals.touchpad.two-finger-scrolling-enabled
+          value: "true"
+        - key: org.gnome.system.location.enabled
+          value: "false"
+        - key: org.gnome.settings-daemon.plugins.power.power-button-action
+          value: "'suspend'"
+        - key: org.gnome.settings-daemon.plugins.power.sleep-inactive-ac-timeout
+          value: "1800"
+        - key: org.gnome.settings-daemon.plugins.power.sleep-inactive-ac-type
+          value: "'nothing'"
+        - key: org.gnome.settings-daemon.plugins.power.sleep-inactive-battery-timeout
+          value: "900"
+        - key: org.gnome.settings-daemon.plugins.power.sleep-inactive-battery-type
+          value: "'suspend'"
+        - key: org.gnome.shell.extensions.pop-shell.active-hint
+          value: "false"
+        - key: org.gnome.shell.extensions.pop-shell.gap-inner
+          value: "uint32 0"
+        - key: org.gnome.shell.extensions.pop-shell.gap-outer
+          value: "uint32 0"
+        - key: org.gnome.shell.extensions.pop-shell.show-title
+          value: "false"
+        - key: org.gnome.shell.extensions.pop-shell.tile-by-default
+          value: "true"
+      
+    - name: get default terminal profile
+      command:
+        argv:
+          - dconf
+          - list
+          - /org/gnome/terminal/legacy/profiles:/
+      register: terminal_profile
+
+    - name: dconf
+      dconf:
+        key: "{{ item.key }}"
+        value: "{{ item.value }}"
+      with_items:
+        # clipboard extension settings
+        - key: "/org/gnome/shell/extensions/clipboard-indicator/disable-down-arrow"
+          value: "true"
+        - key: "/org/gnome/shell/extensions/clipboard-indicator/history-size"
+          value: 100
+        - key: "/org/gnome/shell/extensions/clipboard-indicator/move-item-first"
+          value: "true"
+        - key: "/org/gnome/shell/extensions/clipboard-indicator/strip-text"
+          value: "true"
+        # set terminal font
+        - key: "/org/gnome/terminal/legacy/profiles:/{{ terminal_profile.stdout }}font"
+          value: "'Source Code Pro for Powerline 10'"
+
+    - name: Git dotfiles
+      template:
+        src: gitconfig.j2
+        dest: "/home/{{ user }}/.gitconfig"
+
+    - name: Create local bin directory
+      file:
+        path: "/home/{{ user }}/.local/bin"
+        state: directory
+        recurse: yes
+        owner: "{{ user }}"
+        group: "{{ user }}"
+
+    - name: Get bin latest release
+      uri:
+        url: https://api.github.com/repos/marcosnils/bin/releases/latest
+        return_content: true
+      register: bin_latest
+
+    - name: Install bin
+      get_url:
+        url: "https://github.com/marcosnils/bin/releases/download/{{ bin_latest.json.tag_name }}/bin_{{ bin_latest.json.tag_name | replace('v', '') }}_Linux_x86_64"
+        dest: "/home/{{ user }}/.local/bin/bin"
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: 0755
