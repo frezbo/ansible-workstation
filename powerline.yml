@@ -1,9 +1,12 @@
 - name: Install powerline
   become: yes
   apt:
-    name: powerline
+    name: "{{ item }}"
     state: latest
     update_cache: yes
+  with_items:
+    - powerline
+    - powerline-gitstatus
 
 - name: Local fonts directory
   file:
