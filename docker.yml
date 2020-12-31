@@ -1,0 +1,87 @@
+- name: get latest docker release
+  uri:
+    url: https://api.github.com/repos/moby/moby/releases/latest
+    return_content: true
+  register: docker_remote_info
+
+- name: get docker local version
+  command:
+    argv:
+      - "/home/{{ user }}/.local/bin/docker/docker"
+      - version
+      - --format
+      - "{{ '{{' }}.Client.Version{{ '}}' }}"
+  register: docker_local_info
+
+- name: Set docker metadata
+  set_fact:
+    docker_remote_version: "{{ docker_remote_info.json.tag_name | replace('v', '') }}"
+    docker_client_downlod_url: "https://download.docker.com/linux/static/stable/{{ ansible_architecture }}/docker-{{ docker_remote_info.json.tag_name | replace('v', '') }}.tgz"
+    dokcer_rootless_download_url: "https://download.docker.com/linux/static/stable/{{ ansible_architecture }}/docker-rootless-extras-{{ docker_remote_info.json.tag_name | replace('v', '') }}.tgz"
+    docker_local_version: "{{ docker_local_info.stdout }}"
+
+
+- name: Check if user is lingering
+  stat:
+    path: "/var/lib/systemd/linger/{{ user }}"
+  register: user_lingering
+
+- name: Enable lingering is needed
+  become: yes
+  command: "loginctl enable-linger {{ user }}"
+  when:
+    - not user_lingering.stat.exists
+
+- name: install uidmap
+  become: yes
+  apt:
+    name: uidmap
+    state: latest
+    update_cache: yes
+
+- name: "Delete old docker version {{ docker_local_version }}"
+  file:
+    path: "/home/{{ user }}/.local/bin/docker"
+    state: absent
+  when: docker_local_version != docker_remote_version
+
+- name: "Install docker client {{ docker_remote_version }} local: {{ docker_local_version }}"
+  unarchive:
+    src: "{{ docker_client_downlod_url }}"
+    dest: "/home/{{ user }}/.local/bin"
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  when: docker_local_version != docker_remote_version
+
+- name: "Install docker rootless {{ docker_remote_version }} local: {{ docker_local_version }}"
+  unarchive:
+    src: "{{ dokcer_rootless_download_url }}"
+    dest: "/home/{{ user }}/.local/bin/docker"
+    extra_opts: ['--strip-components=1']
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  when: docker_local_version != docker_remote_version
+
+- name: Create user systemd directory
+  file:
+    path: "/home/{{ user }}/.config/systemd/user"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: create docker systemd user service 
+  template:
+    src: docker.service.j2
+    dest: "/home/{{ user }}/.config/systemd/user/docker.service"
+  notify:
+    - reload user scoped systemctl
+
+- name: enable docker rootless service
+  systemd:
+    daemon_reload: true
+    name: docker.service
+    state: started
+    scope: user

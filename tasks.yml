@@ -66,6 +66,9 @@
     - name: Setup go
       include_tasks: golang.yml
 
+    - name: Setup docker
+      include_tasks: docker.yml
+
     - name: Setup pulumi
       include_tasks: pulumi.yml
 
@@ -167,3 +170,9 @@
         owner: "{{ user }}"
         group: "{{ user }}"
         mode: 0755
+
+  handlers:
+    - name: reload user scoped systemctl
+      systemd:
+        daemon_reload: true
+        scope: user
