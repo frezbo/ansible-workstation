@@ -4,35 +4,30 @@
   tasks:
     - name: "Install external packages"
       vars:
-        package: "{{ item.package }}"
-        repo_key: "{{ item.key | default(omit) }}"
-        repo: "{{ item.repo }}"
-        keyserver: "{{ item.keyserver | default(omit) }}"
-        keyid: "{{ item.keyid | default(omit) }}"
+        packages:
+          - package: enpass
+            repo: "deb https://apt.enpass.io/ stable main"
+            key: "https://apt.enpass.io/keys/enpass-linux.key"
+          - package: codium
+            repo: "deb [signed-by=/etc/apt/trusted.gpg] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main"
+            key: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
+          - package: terraform
+            repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+            key: "https://apt.releases.hashicorp.com/gpg"
+          - package: kubectl
+            repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+            key: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+          - package: signal-desktop
+            repo: "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main"
+            key: "https://updates.signal.org/desktop/apt/keys.asc"
+          - package: git
+            repo: "deb http://ppa.launchpad.net/git-core/ppa/ubuntu {{ ansible_distribution_release }} main"
+            keyserver: keyserver.ubuntu.com
+            keyid: E1DD270288B4E6030699E45FA1715D88E1DF1F24
+          - package: helm
+            repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
+            key: "https://baltocdn.com/helm/signing.asc"
       include_tasks: external-packages.yml
-      with_items:
-        - package: enpass
-          repo: "deb https://apt.enpass.io/ stable main"
-          key: "https://apt.enpass.io/keys/enpass-linux.key"
-        - package: codium
-          repo: "deb [signed-by=/etc/apt/trusted.gpg] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main"
-          key: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
-        - package: terraform
-          repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
-          key: "https://apt.releases.hashicorp.com/gpg"
-        - package: kubectl
-          repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
-          key: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
-        - package: signal-desktop
-          repo: "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main"
-          key: "https://updates.signal.org/desktop/apt/keys.asc"
-        - package: git
-          repo: "deb http://ppa.launchpad.net/git-core/ppa/ubuntu {{ ansible_distribution_release }} main"
-          keyserver: keyserver.ubuntu.com
-          keyid: E1DD270288B4E6030699E45FA1715D88E1DF1F24
-        - package: helm
-          repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
-          key: "https://baltocdn.com/helm/signing.asc"
 
     - name: Install xclip
       become: yes
