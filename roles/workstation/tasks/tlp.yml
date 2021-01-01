@@ -1,0 +1,16 @@
+- name: install tlp
+  become: yes
+  apt:
+    name:
+      - tlp
+      - acpi-call-dkms
+    state: latest
+    update_cache: yes
+
+- name: tlp config
+  become: yes
+  template:
+    src: tlp-thinkpad.conf.j2
+    dest: /etc/tlp.d/01-thinkpad.conf
+  notify:
+    - restart tlp

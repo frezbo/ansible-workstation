@@ -7,6 +7,7 @@
 - name: Get local go version
   shell: "/home/{{ user }}/.local/bin/go/bin/go version | awk '{print $3}'"
   register: go_local_info
+  ignore_errors: yes
 
 - name: set go metadata
   set_fact:

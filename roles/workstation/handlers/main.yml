@@ -1,0 +1,16 @@
+- name: reload user scoped systemctl
+  systemd:
+    daemon_reload: true
+    scope: user
+
+- name: restart docker rootless
+  systemd:
+    name: docker.service
+    state: restarted
+    scope: user
+
+- name: restart tlp
+  become: yes
+  systemd:
+    name: tlp.service
+    state: restarted

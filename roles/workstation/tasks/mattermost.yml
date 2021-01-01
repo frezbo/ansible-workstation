@@ -8,6 +8,7 @@
   shell: |
     grep -aB 1 '"description": "Mattermost"' /opt/Mattermost/resources/app.asar | sed '$d;s/"//g;s/,//g' | awk '{print $2}'
   register: mattermost_local_info
+  ignore_errors: yes
 
 - name: Set mattermost metadata
   set_fact:

@@ -11,7 +11,18 @@
       - version
       - --format
       - "{{ '{{' }}.Client.Version{{ '}}' }}"
+  ignore_errors: yes
   register: docker_local_info
+
+- name: get docker local context info
+  command:
+    argv:
+      - "/home/{{ user }}/.local/bin/docker/docker"
+      - context
+      - ls
+      - --format
+      - "{{ '{{' }}.Name{{ '}}' }}"
+  register: docker_context_local_info
 
 - name: Set docker metadata
   set_fact:
@@ -20,13 +31,12 @@
     dokcer_rootless_download_url: "https://download.docker.com/linux/static/stable/{{ ansible_architecture }}/docker-rootless-extras-{{ docker_remote_info.json.tag_name | replace('v', '') }}.tgz"
     docker_local_version: "{{ docker_local_info.stdout }}"
 
-
 - name: Check if user is lingering
   stat:
     path: "/var/lib/systemd/linger/{{ user }}"
   register: user_lingering
 
-- name: Enable lingering is needed
+- name: Enable lingering if needed
   become: yes
   command: "loginctl enable-linger {{ user }}"
   when:
@@ -64,6 +74,21 @@
     group: "{{ user }}"
   when: docker_local_version != docker_remote_version
 
+- name: Create docker config directory
+  file:
+    path: "/home/{{ user }}/.config/docker"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: create docker daemon json
+  template:
+    src: docker-daemon.json.j2
+    dest: "/home/{{ user }}/.config/docker/daemon.json"
+  notify:
+    - restart docker rootless
+
 - name: Create user systemd directory
   file:
     path: "/home/{{ user }}/.config/systemd/user"
@@ -81,7 +106,29 @@
 
 - name: enable docker rootless service
   systemd:
-    daemon_reload: true
     name: docker.service
     state: started
+    enabled: true
     scope: user
+
+- name: add docker context
+  command:
+    argv:
+      - "/home/{{ user }}/.local/bin/docker/docker"
+      - context
+      - create
+      - rootless
+      - --description
+      - rootless
+      - --docker
+      - host=unix:///run/user/1000/docker.sock
+  when: ('rootless' not in docker_context_local_info.stdout_lines)
+
+- name: set default docker context
+  command:
+    argv:
+      - "/home/{{ user }}/.local/bin/docker/docker"
+      - context
+      - use
+      - rootless
+  when: ('rootless' not in docker_context_local_info.stdout_lines)
