@@ -14,3 +14,11 @@
   systemd:
     name: tlp.service
     state: restarted
+
+- name: reload udev
+  become: yes
+  command:
+    argv:
+      - udevadm
+      - control
+      - --reload

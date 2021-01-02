@@ -1,0 +1,1 @@
+SUBSYSTEM=="usb", ACTION=="add", ENV{PRODUCT}=="{{ canon80d_product_id }}", ENV{SYSTEMD_USER_WANTS}+="canon80d.service", TAG+="systemd"

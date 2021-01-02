@@ -169,3 +169,6 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: 0755
+
+- name: setup canon webcam
+  include_tasks: canon80d.yml

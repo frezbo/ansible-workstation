@@ -1,0 +1,42 @@
+- name: Install video packages
+  become: yes
+  apt:
+    name:
+        - gphoto2
+        - v4l2loopback-utils
+        - ffmpeg
+    state: latest
+    update_cache: yes
+
+- name: enable v4l2loopback module
+  become: yes
+  template:
+    src: canon80d-module.conf.j2
+    dest: /etc/modules-load.d/canon80d.conf
+
+- name: set v4l2loopback module options
+  become: yes
+  template:
+    src: dslr-webcam.conf.j2
+    dest: /etc/modprobe.d/dslr-webcam.conf
+
+- name: create canon systemd user service
+  template:
+    src: canon80d.service.j2
+    dest: "/home/{{ user }}/.config/systemd/user/canon80d.service"
+  notify:
+    - reload user scoped systemctl
+
+- name: enable canon rootless service
+  systemd:
+    name: docker.service
+    enabled: true
+    scope: user
+
+- name: add udev rules
+  become: yes
+  template:
+    src: canon80d-udev.rules.j2
+    dest: /etc/udev/rules.d/10-canon80d.rules
+  notify:
+    - reload udev
