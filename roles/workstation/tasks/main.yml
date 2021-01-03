@@ -23,6 +23,9 @@
       - package: helm
         repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
         key: "https://baltocdn.com/helm/signing.asc"
+      - package: slack-desktop
+        repo: "deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main"
+        key: "https://packagecloud.io/slacktechnologies/slack/gpgkey"
   include_tasks: external-packages.yml
 
 - name: setup tlp
