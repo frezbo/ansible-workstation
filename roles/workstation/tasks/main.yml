@@ -26,6 +26,9 @@
       - package: slack-desktop
         repo: "deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main"
         key: "https://packagecloud.io/slacktechnologies/slack/gpgkey"
+      - package: teams
+        repo: "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main"
+        key: "https://packages.microsoft.com/keys/microsoft.asc"
   include_tasks: external-packages.yml
 
 - name: setup tlp
