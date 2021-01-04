@@ -6,39 +6,28 @@
   register: gnome_version_info
   run_once: true
 
-- name: "Get Gnome Shell extension info for {{ id }}"
+- name: "Get Gnome Shell extensions info"
   uri:
-    url: https://extensions.gnome.org/extension-info/?pk={{ id }}&shell_version={{ gnome_version_info.stdout }}
+    url: https://extensions.gnome.org/extension-info/?pk={{ item }}&shell_version={{ gnome_version_info.stdout }}
     return_content: true
   register: gnome_extension_info
-  
-- name: "Get installed Gnome extensions"
-  command:
-    argv:
-      - gnome-extensions
-      - list
-  register: gnome_installed_extensions_info
-  run_once: true
+  with_items: "{{ extension_ids }}"
 
-- name: "Download gnome extension {{ gnome_extension_info.json.name }}"
-  get_url:
-    url: "https://extensions.gnome.org{{ gnome_extension_info.json.download_url }}"
-    dest: "/tmp/{{ gnome_extension_info.json.uuid }}.zip"
-  when: gnome_extension_info.json.uuid not in gnome_installed_extensions_info.stdout_lines
-
-- name: "Gnome extension {{ gnome_extension_info.json.name }} directory"
+- name: "Gnome extensions directory"
   file:
-    path: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ gnome_extension_info.json.uuid }}"
+    path: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ item.json.uuid }}"
     state: directory
     recurse: yes
     owner: "{{ user }}"
     group: "{{ user }}"
+  with_items: "{{ gnome_extension_info.results }}"
 
-- name: "Unzip Gnome extension {{ gnome_extension_info.json.name }}"
+- name: "Unzip Gnome extensions"
   unarchive:
-    src: "/tmp/{{ gnome_extension_info.json.uuid }}.zip"
-    dest: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ gnome_extension_info.json.uuid }}"
-    creates: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ gnome_extension_info.json.uuid }}/metadata.json"
+    src: "https://extensions.gnome.org{{ item.json.download_url }}"
+    dest: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ item.json.uuid }}"
+    creates: "/home/{{ user }}/.local/share/gnome-shell/extensions/{{ item.json.uuid }}/metadata.json"
     remote_src: yes
     owner: "{{ user }}"
     group: "{{ user }}"
+  with_items: "{{ gnome_extension_info.results }}"

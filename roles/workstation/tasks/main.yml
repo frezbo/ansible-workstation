@@ -49,11 +49,11 @@
 
 - name: Setup Gnome extensions
   vars:
-    id: "{{ item }}"
+    extension_ids:
+      - 779
+      - 7
+      # - 690
   include_tasks: gnome.yml
-  with_items:
-    - 779
-    - 7
 
 - name: Setup fzf
   include_tasks: fzf.yml
