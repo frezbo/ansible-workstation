@@ -73,6 +73,8 @@
     owner: "{{ user }}"
     group: "{{ user }}"
   when: docker_local_version != docker_remote_version
+  notify:
+    - restart docker rootless
 
 - name: Create docker config directory
   file:
