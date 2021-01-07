@@ -14,22 +14,12 @@
   ignore_errors: yes
   register: docker_local_info
 
-- name: get docker local context info
-  command:
-    argv:
-      - "/home/{{ user }}/.local/bin/docker/docker"
-      - context
-      - ls
-      - --format
-      - "{{ '{{' }}.Name{{ '}}' }}"
-  register: docker_context_local_info
-
 - name: Set docker metadata
   set_fact:
     docker_remote_version: "{{ docker_remote_info.json.tag_name | replace('v', '') }}"
     docker_client_downlod_url: "https://download.docker.com/linux/static/stable/{{ ansible_architecture }}/docker-{{ docker_remote_info.json.tag_name | replace('v', '') }}.tgz"
     dokcer_rootless_download_url: "https://download.docker.com/linux/static/stable/{{ ansible_architecture }}/docker-rootless-extras-{{ docker_remote_info.json.tag_name | replace('v', '') }}.tgz"
-    docker_local_version: "{{ docker_local_info.stdout }}"
+    docker_local_version: "{{ docker_local_info.stdout | default('') }}"
 
 - name: Check if user is lingering
   stat:
@@ -112,6 +102,16 @@
     state: started
     enabled: true
     scope: user
+
+- name: get docker local context info
+  command:
+    argv:
+      - "/home/{{ user }}/.local/bin/docker/docker"
+      - context
+      - ls
+      - --format
+      - "{{ '{{' }}.Name{{ '}}' }}"
+  register: docker_context_local_info
 
 - name: add docker context
   command:

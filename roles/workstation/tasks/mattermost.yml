@@ -13,7 +13,7 @@
 - name: Set mattermost metadata
   set_fact:
     mattermost_remote_version: "{{ mm_metadata.json.tag_name }}"
-    mattermost_local_version: "v{{ mattermost_local_info.stdout }}"
+    mattermost_local_version: "v{{ mattermost_local_info.stdout | default('') }}"
 
 - name: Install Mattermost
   become: yes

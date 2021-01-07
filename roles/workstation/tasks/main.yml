@@ -7,9 +7,6 @@
       - package: codium
         repo: "deb [signed-by=/etc/apt/trusted.gpg] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main"
         key: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
-      - package: terraform
-        repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
-        key: "https://apt.releases.hashicorp.com/gpg"
       - package: kubectl
         repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
         key: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
@@ -50,9 +47,11 @@
 - name: Setup Gnome extensions
   vars:
     extension_ids:
-      - 779
-      - 7
+      - 779 # clipboard indicator
+      - 7 # removable drive menu
       # - 690
+      - 906 # audio switcher
+      - 162 # to do
   include_tasks: gnome.yml
 
 - name: Setup fzf
