@@ -2,7 +2,7 @@
 Description=stream video when camera is connected
 
 [Service]
-ExecStart=/bin/sh -c "sleep 3 && gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video2"
+ExecStart=/bin/sh -c "sleep 3 && gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 $(v4l2-ctl --list-devices | grep -A 1 -i 'dummy' | sed '1d' | awk '{ print $1}')"
 Type=simple
 
 [Install]
