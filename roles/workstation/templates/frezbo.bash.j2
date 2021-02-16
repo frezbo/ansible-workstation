@@ -1,13 +1,7 @@
 # shellcheck shell=bash
-powerline-daemon -q
 
-# shellcheck disable=SC2034
-POWERLINE_BASH_CONTINUATION=1
-# shellcheck disable=SC2034
-POWERLINE_BASH_SELECT=1
-
-# shellcheck source=/usr/share/powerline/bindings/bash/powerline.sh
-. /usr/share/powerline/bindings/bash/powerline.sh
+# use startship prompt
+eval "$(starship init bash)"
 
 # local path
 PATH=~/.local/bin/:${PATH}
@@ -63,4 +57,3 @@ eval "$(gh completion -s bash)"
 # setup environemnt variables
 # enable Helm v3 OCI registry support
 export HELM_EXPERIMENTAL_OCI=1
-

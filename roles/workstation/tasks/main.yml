@@ -38,8 +38,8 @@
     state: latest
     update_cache: yes
 
-- name: Setup powerline
-  include_tasks: powerline.yml
+- name: Setup starship
+  include_tasks: starship.yml
 
 - name: Setup Mattermost
   include_tasks: mattermost.yml
@@ -121,14 +121,6 @@
       value: "false"
     - key: org.gnome.shell.extensions.pop-shell.tile-by-default
       value: "true"
-  
-- name: get default terminal profile
-  command:
-    argv:
-      - dconf
-      - list
-      - /org/gnome/terminal/legacy/profiles:/
-  register: terminal_profile
 
 - name: dconf
   dconf:
@@ -144,9 +136,6 @@
       value: "true"
     - key: "/org/gnome/shell/extensions/clipboard-indicator/strip-text"
       value: "true"
-    # set terminal font
-    - key: "/org/gnome/terminal/legacy/profiles:/{{ terminal_profile.stdout }}font"
-      value: "'Source Code Pro for Powerline 10'"
 
 - name: Git dotfiles
   template:
