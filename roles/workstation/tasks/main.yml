@@ -49,9 +49,7 @@
     extension_ids:
       - 779 # clipboard indicator
       - 7 # removable drive menu
-      # - 690
       - 906 # audio switcher
-      - 162 # to do
   include_tasks: gnome.yml
 
 - name: Setup fzf
