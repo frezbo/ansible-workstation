@@ -1,6 +1,12 @@
 # shellcheck shell=bash
 
 # use startship prompt
+
+function set_win_title() {
+    echo -ne "\033]0; ${USER}@${HOSTNAME}:${PWD} \007"
+}
+
+starship_precmd_user_func="set_win_title"
 eval "$(starship init bash)"
 
 # local path
