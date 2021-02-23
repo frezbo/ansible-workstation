@@ -42,6 +42,15 @@ PATH=~/.krew/bin:${PATH}
 # direnv
 eval "$(direnv hook bash)"
 
+# function to merge kubeconfig
+# ### usage
+# kmerge  <path to kubeconfig> <context name>
+function kmerge() {
+    k8s-ctx-import -name "${2}" \
+        -set-current-context=false \
+        < "${1}"
+}
+
 export GOPATH
 export PATH
 
