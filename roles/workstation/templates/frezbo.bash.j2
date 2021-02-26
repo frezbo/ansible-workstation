@@ -51,6 +51,25 @@ function kmerge() {
         < "${1}"
 }
 
+# aws-vault helpers
+function ave() {
+    aws-vault exec --duration 12h "${@}"
+}
+
+function avl() {
+  local LOGIN_URL
+  local ENCODED_URL
+  local PROFILE
+  if ! LOGIN_URL=$(aws-vault login --duration 12h --stdout "${@}"); then
+    echo "${LOGIN_URL}" && return
+  fi
+  ENCODED_URL="${LOGIN_URL//&/%26}"
+  # for profiles ending in "-ro", drop that
+  PROFILE="${!#//-ro/}"
+  URI_HANDLER="ext+container:name=${PROFILE}&url=${ENCODED_URL}"
+  firefox "${URI_HANDLER}"
+}
+
 export GOPATH
 export PATH
 
