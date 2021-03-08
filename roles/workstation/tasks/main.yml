@@ -164,3 +164,18 @@
 
 - name: setup canon webcam
   include_tasks: canon80d.yml
+
+- name: Install picocom
+  become: yes
+  apt:
+    name: picocom
+    state: latest
+    update_cache: yes
+
+- name: add dialout group to user
+  become: yes
+  user:
+    name: frezbo
+    append: yes
+    groups:
+      - dialout
