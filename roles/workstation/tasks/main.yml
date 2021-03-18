@@ -148,11 +148,18 @@
     owner: "{{ user }}"
     group: "{{ user }}"
 
+- name: Check if bin is installed
+  stat:
+    path: "/home/{{ user }}/.local/bin/bin"
+  register: bin_exists
+
 - name: Get bin latest release
   uri:
     url: https://api.github.com/repos/marcosnils/bin/releases/latest
     return_content: true
   register: bin_latest
+  when:
+    - not bin_exists.stat.exists
 
 - name: Install bin
   get_url:
@@ -161,6 +168,8 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: 0755
+  when:
+    - not bin_exists.stat.exists
 
 - name: setup canon webcam
   include_tasks: canon80d.yml
