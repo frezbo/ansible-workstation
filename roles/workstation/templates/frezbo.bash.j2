@@ -70,6 +70,10 @@ function avl() {
   firefox "${URI_HANDLER}"
 }
 
+function unmeta() {
+  exiftool -all= -overwrite_original "${1}"
+}
+
 export GOPATH
 export PATH
 
