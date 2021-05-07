@@ -41,9 +41,6 @@
 - name: Setup starship
   include_tasks: starship.yml
 
-- name: Setup Mattermost
-  include_tasks: mattermost.yml
-
 - name: Setup Gnome extensions
   vars:
     extension_ids:
