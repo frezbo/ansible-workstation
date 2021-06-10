@@ -1,0 +1,40 @@
+- name: Get latest node release
+  uri:
+    url: https://api.github.com/repos/nodejs/node/releases/latest
+    return_content: true
+  register: node_remote_info
+
+- name: Get local node version
+  shell: "/home/{{ user }}/.local/bin/node/bin/node --version"
+  register: node_local_info
+  ignore_errors: yes
+
+- name: set node metadata
+  set_fact:
+    node_remote_version: "{{ node_remote_info.json.tag_name }}"
+    node_download_url: "https://nodejs.org/download/release/{{ node_remote_info.json.tag_name }}/node-{{ node_remote_info.json.tag_name }}-linux-{{ ansible_architecture | replace('x86_', 'x') }}.tar.gz"
+    node_local_version: "{{ node_local_info.stdout }}"
+
+- name: "Delete old node version {{ node_local_version }}"
+  file:
+    path: "/home/{{ user }}/.local/bin/node"
+    state: absent
+  when: node_local_version != node_remote_version
+
+- name: Create node directory
+  file:
+    path: "/home/{{ user }}/.local/bin/node"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: "Unarchive Node {{ node_remote_version }} local: {{ node_local_version }}"
+  unarchive:
+    src: "{{ node_download_url }}"
+    dest: "/home/{{ user }}/.local/bin/node"
+    extra_opts: ['--strip-components=1']
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  when: node_local_version != node_remote_version

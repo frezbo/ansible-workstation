@@ -9,9 +9,6 @@ function set_win_title() {
 starship_precmd_user_func="set_win_title"
 eval "$(starship init bash)"
 
-# local path
-PATH=~/.local/bin/:${PATH}
-
 # assh
 alias ssh="assh wrapper ssh --"
 
@@ -23,9 +20,13 @@ alias kn="kubie ns"
 # shellcheck source=/home/frezbo/.fzf.bash
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# GO PATH
+# Golang
 PATH=~/.local/bin/go/bin:${PATH}
-GOPATH=~/work/golang
+export GOPATH=~/work/golang
+PATH=~/work/golang/bin:${PATH}
+
+# Node PATH
+PATH=~/.local/bin/node/bin:${PATH}
 
 # rust PATH
 PATH=~/.cargo/bin:${PATH}
@@ -43,9 +44,11 @@ PATH=~/.krew/bin:${PATH}
 eval "$(direnv hook bash)"
 
 # function to merge kubeconfig
-# ### usage
-# kmerge  <path to kubeconfig> <context name>
 function kmerge() {
+    if [[ $# != 2 ]]; then
+        echo "### Usage: ${0} <path to kubeconfig> <context name>"
+        exit 1337
+    fi
     k8s-ctx-import -name "${2}" \
         -set-current-context=false \
         < "${1}"
@@ -74,7 +77,6 @@ function unmeta() {
   exiftool -all= -overwrite_original "${1}"
 }
 
-export GOPATH
 export PATH
 
 alias pbcopy='xclip -selection clipboard'
