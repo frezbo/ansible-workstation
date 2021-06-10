@@ -1,9 +1,6 @@
 - name: "Install external packages"
   vars:
     packages:
-      - package: enpass
-        repo: "deb https://apt.enpass.io/ stable main"
-        key: "https://apt.enpass.io/keys/enpass-linux.key"
       - package: codium
         repo: "deb [signed-by=/etc/apt/trusted.gpg] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main"
         key: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
