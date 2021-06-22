@@ -7,9 +7,6 @@
       - package: kubectl
         repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
         key: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
-      - package: signal-desktop
-        repo: "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main"
-        key: "https://updates.signal.org/desktop/apt/keys.asc"
       - package: git
         repo: "deb http://ppa.launchpad.net/git-core/ppa/ubuntu {{ ansible_distribution_release }} main"
         keyserver: keyserver.ubuntu.com
