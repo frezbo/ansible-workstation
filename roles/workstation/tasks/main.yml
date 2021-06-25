@@ -159,6 +159,9 @@
   when:
     - not bin_exists.stat.exists
 
+- name: setup cloud cli wrappers
+  include_tasks: cloud.yml
+
 - name: setup canon webcam
   include_tasks: canon80d.yml
 

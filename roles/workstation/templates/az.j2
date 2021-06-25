@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+# never use any remote context
+export DOCKER_CONTEXT="rootless"
+
+docker container run \
+    --rm \
+    --workdir "/azure" \
+    -v "${PWD}/:/azure" \
+    -v "${HOME}/.azure/:/root/.azure/" \
+    mcr.microsoft.com/azure-cli:latest az "$@"
