@@ -1,16 +1,9 @@
 - name: "Install external packages"
   vars:
     packages:
-      - package: codium
-        repo: "deb [signed-by=/etc/apt/trusted.gpg] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main"
-        key: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg"
       - package: kubectl
         repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
         key: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
-      - package: git
-        repo: "deb http://ppa.launchpad.net/git-core/ppa/ubuntu {{ ansible_distribution_release }} main"
-        keyserver: keyserver.ubuntu.com
-        keyid: E1DD270288B4E6030699E45FA1715D88E1DF1F24
       - package: helm
         repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
         key: "https://baltocdn.com/helm/signing.asc"
@@ -164,13 +157,6 @@
 
 - name: setup canon webcam
   include_tasks: canon80d.yml
-
-- name: Install picocom
-  become: yes
-  apt:
-    name: picocom
-    state: latest
-    update_cache: yes
 
 - name: add dialout group to user
   become: yes
