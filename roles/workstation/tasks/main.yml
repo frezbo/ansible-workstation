@@ -7,6 +7,10 @@
       - package: helm
         repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
         key: "https://baltocdn.com/helm/signing.asc"
+      - package: "kicad"
+        repo: "deb http://ppa.launchpad.net/kicad/kicad-5.1-releases/ubuntu hirsute main"
+        keyid: "245D5502FAD7A805"
+        keyserver: "keyserver.ubuntu.com"
   include_tasks: external-packages.yml
 
 - name: setup tlp
