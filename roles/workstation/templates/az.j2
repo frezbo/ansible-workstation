@@ -7,7 +7,8 @@ export DOCKER_CONTEXT="rootless"
 
 docker container run \
     --rm \
-    --workdir "/azure" \
-    -v "${PWD}/:/azure" \
+    --workdir "/az" \
+    -v "${PWD}/:/az" \
     -v "${HOME}/.azure/:/root/.azure/" \
     mcr.microsoft.com/azure-cli:latest az "$@"
+
