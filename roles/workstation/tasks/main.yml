@@ -11,6 +11,9 @@
         repo: "deb http://ppa.launchpad.net/kicad/kicad-5.1-releases/ubuntu hirsute main"
         keyid: "245D5502FAD7A805"
         keyserver: "keyserver.ubuntu.com"
+      - package: tailscale
+        repo: "deb https://pkgs.tailscale.com/stable/ubuntu hirsute main"
+        key: "https://pkgs.tailscale.com/stable/ubuntu/hirsute.gpg"
   include_tasks: external-packages.yml
 
 - name: setup tlp
@@ -52,6 +55,9 @@
 
 - name: Setup docker
   include_tasks: docker.yml
+
+- name: Setup syncthing
+  include_tasks: syncthing.yml
 
 - name: Setup node
   include_tasks: node.yml
