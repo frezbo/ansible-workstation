@@ -14,6 +14,9 @@
       - package: tailscale
         repo: "deb https://pkgs.tailscale.com/stable/ubuntu hirsute main"
         key: "https://pkgs.tailscale.com/stable/ubuntu/hirsute.gpg"
+      - package: code
+        repo: "deb https://packages.microsoft.com/repos/code stable main"
+        key: "https://packages.microsoft.com/keys/microsoft.asc"
   include_tasks: external-packages.yml
 
 - name: setup tlp
