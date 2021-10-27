@@ -12,4 +12,10 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: 0750
-
+- name: create gcloud wrapper
+  template:
+    src: gcloud.j2
+    dest: "/home/{{ user }}/.local/bin/gcloud"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0750

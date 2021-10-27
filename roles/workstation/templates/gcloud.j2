@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+# never use any remote context
+export DOCKER_CONTEXT="rootless"
+
+docker container run \
+	--rm \
+	--interactive \
+	--tty \
+        --workdir "/gcp" \
+	-v "${PWD}/:/gcp/" \
+	-v "${HOME}/..config/gcloud:/root/.config/gcloud/" \
+	gcr.io/google.com/cloudsdktool/cloud-sdk:slim gcloud "$@"
