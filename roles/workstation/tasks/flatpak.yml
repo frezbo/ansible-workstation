@@ -1,0 +1,6 @@
+- name: install flatpak
+  flatpak:
+    name: "{{ item }}"
+    remote: flathub
+    method: user
+  with_items: "{{ packages }}"

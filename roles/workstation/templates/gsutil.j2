@@ -12,4 +12,4 @@ docker container run \
 	--workdir "/gcp" \
 	-v "${PWD}/:/gcp/" \
 	-v "${HOME}/.config/gcloud:/root/.config/gcloud/" \
-	gcr.io/google.com/cloudsdktool/cloud-sdk:slim gcloud "$@"
+	gcr.io/google.com/cloudsdktool/cloud-sdk:slim gsutil "$@"

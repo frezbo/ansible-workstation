@@ -22,6 +22,16 @@
 - name: setup tlp
   include_tasks: tlp.yml
 
+- name: setup flatpaks
+  vars:
+    packages:
+      - com.discordapp.Discord
+      - com.slack.Slack
+      - md.obsidian.Obsidian
+      - org.chromium.Chromium
+      - org.flameshot.Flameshot
+  include_tasks: flatpak.yml
+
 - name: Install xclip
   become: yes
   apt:
