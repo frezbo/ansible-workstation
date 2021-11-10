@@ -15,6 +15,7 @@
         repo: "deb https://pkgs.tailscale.com/stable/ubuntu hirsute main"
         key: "https://pkgs.tailscale.com/stable/ubuntu/hirsute.gpg"
       - package: code
+        repo_file_name: vscode
         repo: "deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main"
         key: "https://packages.microsoft.com/keys/microsoft.asc"
   include_tasks: external-packages.yml
