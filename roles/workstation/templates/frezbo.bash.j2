@@ -23,6 +23,10 @@ alias kn="kubie ns"
 # set default EDITOR
 export EDITOR="vim"
 
+# don't use gnome keyring for ssh,
+# it doesn't prompt for ssh keys need PIN nad touch from hardware key
+export SSH_AUTH_SOCK="/run/user/1000/keyring/.ssh"
+
 # Golang
 PATH=~/.local/bin/go/bin:${PATH}
 export GOPATH=~/work/golang
