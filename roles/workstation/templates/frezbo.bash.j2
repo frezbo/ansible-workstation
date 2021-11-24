@@ -51,7 +51,7 @@ eval "$(direnv hook bash)"
 function kmerge() {
     if [[ $# != 2 ]]; then
         echo "### Usage: ${0} <path to kubeconfig> <context name>"
-        exit 1337
+        return 1337
     fi
     k8s-ctx-import -name "${2}" \
         -set-current-context=false \
@@ -81,6 +81,14 @@ function unmeta() {
   exiftool -all= -overwrite_original "${1}"
 }
 
+function device-shutdown() {
+  if [[ $# != 1 ]]; then
+    echo "### Usage: ${0} <block device name>"
+    return 1337
+  fi
+  udisksctl power-off -b "${1}"
+}
+
 export PATH
 
 alias pbcopy='xclip -selection clipboard'
@@ -92,6 +100,8 @@ alias gc='git clone'
 alias gs='git status'
 alias gd='git diff'
 alias gcm='git commit'
+alias grep="rg"
+alias ls="exa"
 
 # kubectl bash completion
 source <(kubectl completion bash)
@@ -108,6 +118,6 @@ source ~/.docker-completion.sh
 # GitHub cli bash completion
 eval "$(gh completion -s bash)"
 
-# setup environemnt variables
+# setup environment variables
 # enable Helm v3 OCI registry support
 export HELM_EXPERIMENTAL_OCI=1
