@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+ACTION="${1:-''}"
+
+case "${ACTION}" in
+    up)
+        # just a hack to clean up already running containers
+        ${0} down
+        echo "Starting registry mirrors"
+        docker container run \
+            --detach \
+            --publish 5000:5000 \
+            --volume "${HOME}/.cache/registry-mirrors/docker:/var/lib/registry" \
+            --env REGISTRY_PROXY_REMOTEURL=https://registry-1.docker.io \
+            --name registry-docker.io registry:2
+
+        docker container run \
+            --detach \
+            --publish 5001:5000 \
+            --volume "${HOME}/.cache/registry-mirrors/k8s-gcr:/var/lib/registry" \
+            --env REGISTRY_PROXY_REMOTEURL=https://k8s.gcr.io \
+            --name registry-k8s.gcr.io registry:2
+
+        docker container run \
+            --detach \
+            --publish 5002:5000 \
+            --volume "${HOME}/.cache/registry-mirrors/quay:/var/lib/registry" \
+            --env REGISTRY_PROXY_REMOTEURL=https://quay.io \
+            --name registry-quay.io registry:2.5
+
+        docker container run \
+            --detach \
+            --publish 5003:5000 \
+            --volume "${HOME}/.cache/registry-mirrors/gcr:/var/lib/registry" \
+            --env REGISTRY_PROXY_REMOTEURL=https://gcr.io \
+            --name registry-gcr.io registry:2
+
+        docker container run \
+            --detach \
+            --publish 5004:5000 \
+            --volume "${HOME}/.cache/registry-mirrors/ghcr:/var/lib/registry" \
+            --env REGISTRY_PROXY_REMOTEURL=https://ghcr.io \
+            --name registry-ghcr.io registry:2
+
+        docker container run \
+            --detach \
+            --publish 5010:5000 \
+            --volume "${HOME}/.cache/registry-mirrors/local:/var/lib/registry" \
+            --name registry-local registry:2
+
+        ;;
+    down)
+        echo "Stopping registry mirrors"
+        docker container rm \
+            --force \
+            registry-docker.io \
+            registry-k8s.gcr.io \
+            registry-quay.io \
+            registry-gcr.io \
+            registry-ghcr.io \
+            registry-local
+        ;;
+    *)
+        echo "Usage: ${0} <up/down>"
+        exit 1
+        ;;
+esac
+

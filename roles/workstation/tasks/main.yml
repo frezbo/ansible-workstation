@@ -180,6 +180,14 @@
 - name: setup cloud cli wrappers
   include_tasks: cloud.yml
 
+- name: create registry-mirrors wrapper
+  template:
+    src: registry-mirrors.j2
+    dest: "/home/{{ user }}/.local/bin/registry-mirrors"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0750
+
 - name: setup canon webcam
   include_tasks: canon80d.yml
 
