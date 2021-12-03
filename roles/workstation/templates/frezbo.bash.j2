@@ -1,5 +1,9 @@
 # shellcheck shell=bash
 
+# add local path
+PATH="~/.local/bin:${PATH}"
+export PATH
+
 # vte completion
 # https://gnunn1.github.io/tilix-web/manual/vteconfig/
 source /etc/profile.d/vte-2.91.sh
@@ -32,21 +36,21 @@ export EDITOR="vim"
 export SSH_AUTH_SOCK="/run/user/1000/keyring/.ssh"
 
 # Golang
-PATH=~/.local/bin/go/bin:${PATH}
+PATH="${PATH}:~/.local/bin/go/bin"
 export GOPATH=~/work/golang
-PATH=~/work/golang/bin:${PATH}
+PATH="${PATH}:~/work/golang/bin"
 
 # Node PATH
-PATH=~/.local/bin/node/bin:${PATH}
+PATH="${PATH}:~/.local/bin/node/bin"
 
 # rust PATH
-PATH=~/.cargo/bin:${PATH}
+PATH="${PATH}:~/.cargo/bin"
 
 # Pulumi PATH
-PATH=~/.local/bin/pulumi:${PATH}
+PATH="${PATH}:~/.local/bin/pulumi"
 
 # Docker PATH
-PATH=~/.local/bin/docker:${PATH}
+PATH="${PATH}:~/.local/bin/docker"
 
 # direnv
 eval "$(direnv hook bash)"
