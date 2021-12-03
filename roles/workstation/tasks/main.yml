@@ -60,10 +60,20 @@
     src: frezbo.bash.j2
     dest: "/home/{{ user }}/.frezbo.bash"
 
-- name: manage bash dotfiles
+- name: render user profile
+  template:
+    src: frezbo.profile.j2
+    dest: "/home/{{ user }}/.frezbo.profile"
+
+- name: manage bashrc
   blockinfile:
     path: "/home/{{ user }}/.bashrc"
     content: ". ~/.frezbo.bash"
+
+- name: manage user profile
+  blockinfile:
+    path: "/home/{{ user }}/.profile"
+    content: ". ~/.frezbo.profile"
 
 - name: Setup go
   include_tasks: golang.yml

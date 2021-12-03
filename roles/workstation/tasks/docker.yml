@@ -106,7 +106,7 @@
 - name: install docker bash completion
   get_url:
     url: https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker
-    dest: "/home/{{ user }}/.docker-completion.sh"
+    dest: "/home/{{ user }}/.local/bin/docker/docker-completion.sh"
     owner: "{{ user }}"
     group: "{{ user }}"
 

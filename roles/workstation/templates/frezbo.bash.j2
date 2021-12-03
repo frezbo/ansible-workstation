@@ -1,14 +1,10 @@
 # shellcheck shell=bash
 
-# add local path
-PATH="~/home/frezbo/local/bin:${PATH}"
-export PATH
-
 # vte completion
 # https://gnunn1.github.io/tilix-web/manual/vteconfig/
 source /etc/profile.d/vte-2.91.sh
 
-# use startship prompt
+# use starship prompt
 
 function set_win_title() {
     echo -ne "\033]0; ${USER}@${HOSTNAME}:${PWD//${HOME}/\~} \007"
@@ -25,8 +21,7 @@ alias kx="kubie ctx"
 alias kn="kubie ns"
 
 # fzf
-# shellcheck source=/home/frezbo/.fzf.bash
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f /home/{{ user }}/.fzf.bash ] && source /home/{{ user }}/.fzf.bash
 
 # set default EDITOR
 export EDITOR="vim"
@@ -36,21 +31,7 @@ export EDITOR="vim"
 export SSH_AUTH_SOCK="/run/user/1000/keyring/.ssh"
 
 # Golang
-PATH="${PATH}:~/.local/bin/go/bin"
-export GOPATH=~/work/golang
-PATH="${PATH}:~/work/golang/bin"
-
-# Node PATH
-PATH="${PATH}:~/.local/bin/node/bin"
-
-# rust PATH
-PATH="${PATH}:~/.cargo/bin"
-
-# Pulumi PATH
-PATH="${PATH}:~/.local/bin/pulumi"
-
-# Docker PATH
-PATH="${PATH}:~/.local/bin/docker"
+export GOPATH="/home/{{ user }}/work/golang"
 
 # direnv
 eval "$(direnv hook bash)"
@@ -97,8 +78,6 @@ function device-shutdown() {
   udisksctl power-off -b "${1}"
 }
 
-export PATH
-
 alias pbcopy='xclip -selection clipboard'
 alias pbcopyi="xclip -selection clipboard -t image/png -i"
 alias pbpaste='xclip -selection clipboard -o'
@@ -123,7 +102,7 @@ source <(talosctl completion bash)
 source <(helm completion bash)
 
 # docker bash completion
-source ~/.docker-completion.sh
+source /home/{{ user }}/.local/bin/docker/docker-completion.sh
 
 # GitHub cli bash completion
 eval "$(gh completion -s bash)"
