@@ -21,7 +21,7 @@ alias kx="kubie ctx"
 alias kn="kubie ns"
 
 # fzf
-[ -f /home/{{ user }}/.fzf.bash ] && source /home/{{ user }}/.fzf.bash
+source /home/{{ user }}/.config/dotfiles/fzf/fzf.bash
 
 # set default EDITOR
 export EDITOR="vim"
@@ -40,7 +40,7 @@ eval "$(direnv hook bash)"
 function kmerge() {
     if [[ $# != 2 ]]; then
         echo "### Usage: ${0} <path to kubeconfig> <context name>"
-        return 1337
+        return 1
     fi
     k8s-ctx-import -name "${2}" \
         -set-current-context=false \
@@ -73,7 +73,7 @@ function unmeta() {
 function device-shutdown() {
   if [[ $# != 1 ]]; then
     echo "### Usage: ${0} <block device name>"
-    return 1337
+    return 1
   fi
   udisksctl power-off -b "${1}"
 }
@@ -102,7 +102,7 @@ source <(talosctl completion bash)
 source <(helm completion bash)
 
 # docker bash completion
-source /home/{{ user }}/.local/bin/docker/docker-completion.sh
+source /home/{{ user }}/.config/dotfiles/docker/docker-completion.sh
 
 # GitHub cli bash completion
 eval "$(gh completion -s bash)"

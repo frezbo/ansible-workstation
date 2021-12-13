@@ -1,0 +1,42 @@
+- name: Create dotfiles directory
+  file:
+    path: "/home/{{ user }}/.config/dotfiles"
+    state: directory
+    mode: 0755
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: render bash dotfile
+  template:
+    src: bashrc.j2
+    dest: "/home/{{ user }}/.config/dotfiles/bashrc"
+
+- name: render user profile
+  template:
+    src: profile.j2
+    dest: "/home/{{ user }}/.config/dotfiles/profile"
+
+- name: manage bashrc
+  blockinfile:
+    path: "/home/{{ user }}/.bashrc"
+    content: ". /home/{{ user }}/.config/dotfiles/bashrc"
+
+- name: manage user profile
+  blockinfile:
+    path: "/home/{{ user }}/.profile"
+    content: ". /home/{{ user }}/.config/dotfiles/profile"
+
+- name: Create fish config directory
+  file:
+    path: "/home/{{ user }}/.config/fish"
+    state: directory
+    mode: 0700
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: render fish config
+  template:
+    src: config.fish.j2
+    dest: "/home/{{ user }}/.config/fish/config.fish"

@@ -32,13 +32,6 @@
   when:
     - not user_lingering.stat.exists
 
-- name: install uidmap
-  become: yes
-  apt:
-    name: uidmap
-    state: latest
-    update_cache: yes
-
 - name: "Delete old docker version {{ docker_local_version }}"
   file:
     path: "/home/{{ user }}/.local/bin/docker"
@@ -70,6 +63,7 @@
   file:
     path: "/home/{{ user }}/.config/docker"
     state: directory
+    mode: 0700
     recurse: yes
     owner: "{{ user }}"
     group: "{{ user }}"
@@ -85,6 +79,7 @@
   file:
     path: "/home/{{ user }}/.config/systemd/user"
     state: directory
+    mode: 0700
     recurse: yes
     owner: "{{ user }}"
     group: "{{ user }}"
@@ -103,10 +98,26 @@
     enabled: true
     scope: user
 
+- name: Create docker dotfiles directory
+  file:
+    path: "/home/{{ user }}/.config/dotfiles/docker"
+    state: directory
+    mode: 0700
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
 - name: install docker bash completion
   get_url:
     url: https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker
-    dest: "/home/{{ user }}/.local/bin/docker/docker-completion.sh"
+    dest: "/home/{{ user }}/.config/dotfiles/docker/docker-completion.sh"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: install docker fish completion
+  get_url:
+    url: https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/fish/docker.fish
+    dest: "/home/{{ user }}/.config/dotfiles/docker/docker.fish"
     owner: "{{ user }}"
     group: "{{ user }}"
 

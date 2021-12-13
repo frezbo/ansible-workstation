@@ -20,6 +20,26 @@
         key: "https://packages.microsoft.com/keys/microsoft.asc"
   include_tasks: external-packages.yml
 
+- name: common packages
+  become: yes
+  apt:
+    name:
+      - tilix
+      - fish
+      - fonts-firacode
+      - xclip
+      # tlp
+      - tlp
+      - acpi-call-dkms
+      # canond
+      - gphoto2
+      - v4l2loopback-utils
+      - ffmpeg
+      # docker
+      - uidmap
+    state: latest
+    update_cache: yes
+
 - name: setup tlp
   include_tasks: tlp.yml
 
@@ -33,12 +53,8 @@
       - org.flameshot.Flameshot
   include_tasks: flatpak.yml
 
-- name: Install xclip
-  become: yes
-  apt:
-    name: xclip
-    state: latest
-    update_cache: yes
+- name: Setup dotfiles
+  include_tasks: dotfiles.yml
 
 - name: Setup starship
   include_tasks: starship.yml
@@ -55,26 +71,6 @@
 - name: Setup fzf
   include_tasks: fzf.yml
 
-- name: render bash dotfile
-  template:
-    src: frezbo.bash.j2
-    dest: "/home/{{ user }}/.frezbo.bash"
-
-- name: render user profile
-  template:
-    src: frezbo.profile.j2
-    dest: "/home/{{ user }}/.frezbo.profile"
-
-- name: manage bashrc
-  blockinfile:
-    path: "/home/{{ user }}/.bashrc"
-    content: ". ~/.frezbo.bash"
-
-- name: manage user profile
-  blockinfile:
-    path: "/home/{{ user }}/.profile"
-    content: ". ~/.frezbo.profile"
-
 - name: Setup go
   include_tasks: golang.yml
 
@@ -89,6 +85,14 @@
 
 - name: Setup pulumi
   include_tasks: pulumi.yml
+
+- name: get default tilix profile
+  command:
+    argv:
+      - dconf
+      - list
+      - /com/gexperts/Tilix/profiles/
+  register: tilix_profile
 
 - name: gsettings
   gsetting:
@@ -149,6 +153,15 @@
     - key: "/org/gnome/shell/extensions/clipboard-indicator/move-item-first"
       value: "true"
     - key: "/org/gnome/shell/extensions/clipboard-indicator/strip-text"
+      value: "true"
+    # tilix settings
+    - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}use-custom-command"
+      value: "true"
+    - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}custom-command"
+      value: "'/usr/bin/fish'"
+    - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}font"
+      value: "'Fira Code weight=453 12'"
+    - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}scrollback-unlimited"
       value: "true"
 
 - name: Git dotfiles

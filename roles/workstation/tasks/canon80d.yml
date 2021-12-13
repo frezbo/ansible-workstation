@@ -1,13 +1,3 @@
-- name: Install video packages
-  become: yes
-  apt:
-    name:
-        - gphoto2
-        - v4l2loopback-utils
-        - ffmpeg
-    state: latest
-    update_cache: yes
-
 - name: enable v4l2loopback module
   become: yes
   template:

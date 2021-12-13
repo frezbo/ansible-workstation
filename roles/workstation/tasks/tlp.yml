@@ -1,12 +1,3 @@
-- name: install tlp
-  become: yes
-  apt:
-    name:
-      - tlp
-      - acpi-call-dkms
-    state: latest
-    update_cache: yes
-
 - name: tlp config
   become: yes
   template:

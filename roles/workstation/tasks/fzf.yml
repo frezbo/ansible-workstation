@@ -1,7 +1,8 @@
 - name: Create fzf directory
   file:
-    path: "/home/{{ user }}/.fzf"
+    path: "/home/{{ user }}/.config/dotfiles/fzf"
     state: directory
+    mode: 0700
     recurse: yes
     owner: "{{ user }}"
     group: "{{ user }}"
@@ -14,6 +15,24 @@
     group: "{{ user }}"
   with_items:
     - url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash
-      dest: "/home/{{ user }}/.fzf/key-bindings.bash"
+      dest: "/home/{{ user }}/.config/dotfiles/fzf/key-bindings.bash"
     - url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.bash
-      dest: "/home/{{ user }}/.fzf/completion.bash"
+      dest: "/home/{{ user }}/.config/dotfiles/fzf/completion.bash"
+    - url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.fish
+      dest: "/home/{{ user }}/.config/dotfiles/fzf/key-bindings.fish"
+
+- name: create fzf loader
+  file:
+    path: "/home/{{ user }}/.config/dotfiles/fzf/fzf.bash"
+    state: touch
+    mode: 0700
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: add content to fzf loader
+  blockinfile:
+    path: "/home/{{ user }}/.config/dotfiles/fzf/fzf.bash"
+    content: |
+      [[ \$- == *i* ]] && source "/home/{{ user }}/.config/dotfiles/fzf/completion.bash" 2> /dev/null
+
+      source /home/{{ user }}/.config/dotfiles/fzf/key-bindings.bash
