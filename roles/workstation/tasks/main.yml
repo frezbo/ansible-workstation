@@ -8,11 +8,11 @@
         repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
         key: "https://baltocdn.com/helm/signing.asc"
       - package: "kicad"
-        repo: "deb http://ppa.launchpad.net/kicad/kicad-5.1-releases/ubuntu hirsute main"
+        repo: "deb http://ppa.launchpad.net/kicad/kicad-5.1-releases/ubuntu impish main"
         keyid: "245D5502FAD7A805"
         keyserver: "keyserver.ubuntu.com"
       - package: tailscale
-        repo: "deb https://pkgs.tailscale.com/stable/ubuntu hirsute main"
+        repo: "deb https://pkgs.tailscale.com/stable/ubuntu impish main"
         key: "https://pkgs.tailscale.com/stable/ubuntu/hirsute.gpg"
       - package: code
         repo_file_name: vscode
