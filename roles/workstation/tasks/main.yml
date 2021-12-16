@@ -65,7 +65,6 @@
       - 779 # clipboard indicator
       - 7 # removable drive menu
       - 906 # audio switcher
-      - 1162 # emoji selector
   include_tasks: gnome.yml
 
 - name: Setup fzf
