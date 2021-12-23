@@ -19,7 +19,6 @@
 - name: Install packages
   become: yes
   apt:
-    name: "{{ item.package }}"
+    name: "{{ packages | map(attribute='package') | list }}"
     state: latest
     update_cache: yes
-  with_items: "{{ packages }}"
