@@ -8,7 +8,7 @@
         repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
         key: "https://baltocdn.com/helm/signing.asc"
       - package: "kicad"
-        repo: "deb http://ppa.launchpad.net/kicad/kicad-5.1-releases/ubuntu impish main"
+        repo: "deb http://ppa.launchpad.net/kicad/kicad-6.0-releases/ubuntu impish main"
         keyid: "245D5502FAD7A805"
         keyserver: "keyserver.ubuntu.com"
       - package: tailscale
