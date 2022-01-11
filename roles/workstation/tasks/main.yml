@@ -18,6 +18,9 @@
         repo_file_name: vscode
         repo: "deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main"
         key: "https://packages.microsoft.com/keys/microsoft.asc"
+      - package: docker-ce
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu impish stable"
+        key: "https://download.docker.com/linux/ubuntu/gpg"
   include_tasks: external-packages.yml
 
 - name: common packages
@@ -37,9 +40,18 @@
       - v4l2loopback-utils
       - ffmpeg
       # docker
-      - uidmap
+      - docker-ce-cli
+      - containerd.io
     state: latest
     update_cache: yes
+
+- name: Create fish completions directory
+  file:
+    path: "/home/{{ user }}/.config/fish/completions"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: setup tlp
   include_tasks: tlp.yml

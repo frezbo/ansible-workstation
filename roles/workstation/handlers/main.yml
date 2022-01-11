@@ -3,11 +3,10 @@
     daemon_reload: true
     scope: user
 
-- name: restart docker rootless
+- name: restart docker
   systemd:
     name: docker.service
     state: restarted
-    scope: user
 
 - name: restart tlp
   become: yes

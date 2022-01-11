@@ -1,154 +1,22 @@
-- name: get latest docker release
-  uri:
-    url: https://api.github.com/repos/moby/moby/releases/latest
-    return_content: true
-  register: docker_remote_info
-
-- name: get docker local version
-  command:
-    argv:
-      - "/home/{{ user }}/.local/bin/docker/docker"
-      - version
-      - --format
-      - "{{ '{{' }}.Client.Version{{ '}}' }}"
-  ignore_errors: yes
-  register: docker_local_info
-
-- name: Set docker metadata
-  set_fact:
-    docker_remote_version: "{{ docker_remote_info.json.tag_name | replace('v', '') }}"
-    docker_client_downlod_url: "https://download.docker.com/linux/static/stable/{{ ansible_architecture }}/docker-{{ docker_remote_info.json.tag_name | replace('v', '') }}.tgz"
-    docker_rootless_download_url: "https://download.docker.com/linux/static/stable/{{ ansible_architecture }}/docker-rootless-extras-{{ docker_remote_info.json.tag_name | replace('v', '') }}.tgz"
-    docker_local_version: "{{ docker_local_info.stdout | default('') }}"
-
-- name: Check if user is lingering
-  stat:
-    path: "/var/lib/systemd/linger/{{ user }}"
-  register: user_lingering
-
-- name: Enable lingering if needed
+- name: add docker group to user
   become: yes
-  command: "loginctl enable-linger {{ user }}"
-  when:
-    - not user_lingering.stat.exists
-
-- name: "Delete old docker version {{ docker_local_version }}"
-  file:
-    path: "/home/{{ user }}/.local/bin/docker"
-    state: absent
-  when: docker_local_version != docker_remote_version
-
-- name: "Install docker client {{ docker_remote_version }} local: {{ docker_local_version }}"
-  unarchive:
-    src: "{{ docker_client_downlod_url }}"
-    dest: "/home/{{ user }}/.local/bin"
-    remote_src: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
-  when: docker_local_version != docker_remote_version
-
-- name: "Install docker rootless {{ docker_remote_version }} local: {{ docker_local_version }}"
-  unarchive:
-    src: "{{ docker_rootless_download_url }}"
-    dest: "/home/{{ user }}/.local/bin/docker"
-    extra_opts: ['--strip-components=1']
-    remote_src: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
-  when: docker_local_version != docker_remote_version
-  notify:
-    - restart docker rootless
-
-- name: Create docker config directory
-  file:
-    path: "/home/{{ user }}/.config/docker"
-    state: directory
-    mode: 0700
-    recurse: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
+  user:
+    name: frezbo
+    append: yes
+    groups:
+      - docker
 
 - name: create docker daemon json
+  become: yes
   template:
     src: docker-daemon.json.j2
-    dest: "/home/{{ user }}/.config/docker/daemon.json"
+    dest: /etc/docker/daemon.json
   notify:
-    - restart docker rootless
-
-- name: Create user systemd directory
-  file:
-    path: "/home/{{ user }}/.config/systemd/user"
-    state: directory
-    mode: 0700
-    recurse: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
-
-- name: create docker systemd user service 
-  template:
-    src: docker.service.j2
-    dest: "/home/{{ user }}/.config/systemd/user/docker.service"
-  notify:
-    - reload user scoped systemctl
-
-- name: enable docker rootless service
-  systemd:
-    name: docker.service
-    state: started
-    enabled: true
-    scope: user
-
-- name: Create docker dotfiles directory
-  file:
-    path: "/home/{{ user }}/.config/dotfiles/docker"
-    state: directory
-    mode: 0700
-    recurse: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
-
-- name: install docker bash completion
-  get_url:
-    url: https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker
-    dest: "/home/{{ user }}/.config/dotfiles/docker/docker-completion.sh"
-    owner: "{{ user }}"
-    group: "{{ user }}"
+    - restart docker
 
 - name: install docker fish completion
   get_url:
     url: https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/fish/docker.fish
-    dest: "/home/{{ user }}/.config/dotfiles/docker/docker.fish"
+    dest: "/home/{{ user }}/.config/fish/completions/docker.fish"
     owner: "{{ user }}"
     group: "{{ user }}"
-
-- name: get docker local context info
-  command:
-    argv:
-      - "/home/{{ user }}/.local/bin/docker/docker"
-      - context
-      - ls
-      - --format
-      - "{{ '{{' }}.Name{{ '}}' }}"
-  register: docker_context_local_info
-
-- name: add docker context
-  command:
-    argv:
-      - "/home/{{ user }}/.local/bin/docker/docker"
-      - context
-      - create
-      - rootless
-      - --description
-      - rootless
-      - --docker
-      - host=unix:///run/user/1000/docker.sock
-  when: ('rootless' not in docker_context_local_info.stdout_lines)
-
-- name: set default docker context
-  command:
-    argv:
-      - "/home/{{ user }}/.local/bin/docker/docker"
-      - context
-      - use
-      - rootless
-  when: ('rootless' not in docker_context_local_info.stdout_lines)
