@@ -42,6 +42,9 @@
       # docker
       - docker-ce-cli
       - containerd.io
+      # qemu
+      - qemu
+      - qemu-user-static
     state: latest
     update_cache: yes
 
