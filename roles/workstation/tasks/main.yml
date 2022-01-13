@@ -179,10 +179,15 @@
     - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}scrollback-unlimited"
       value: "true"
 
-- name: Git dotfiles
+- name: gitconfig dotfiles
   template:
     src: gitconfig.j2
     dest: "/home/{{ user }}/.gitconfig"
+
+- name: gitignore dotfiles
+  template:
+    src: gitignore.j2
+    dest: "/home/{{ user }}/.gitignore"
 
 - name: Create local bin directory
   file:

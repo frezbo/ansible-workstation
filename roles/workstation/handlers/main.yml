@@ -4,6 +4,7 @@
     scope: user
 
 - name: restart docker
+  become: yes
   systemd:
     name: docker.service
     state: restarted
