@@ -2,9 +2,6 @@
 
 set -eu -o pipefail
 
-# never use any remote context
-export DOCKER_CONTEXT="rootless"
-
 docker container run \
 	--rm \
 	--interactive \
