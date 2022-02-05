@@ -92,9 +92,6 @@
 - name: Setup docker
   include_tasks: docker.yml
 
-- name: Setup syncthing
-  include_tasks: syncthing.yml
-
 - name: Setup node
   include_tasks: node.yml
 
