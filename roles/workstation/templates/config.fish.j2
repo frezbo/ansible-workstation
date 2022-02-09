@@ -72,6 +72,24 @@ function device-shutdown
   end  
 end
 
+function qq
+  clear
+
+  set -l logpath "$TMPDIR/q"
+
+  if test -z "$TMPDIR"
+      set logpath "/tmp/q"
+  end
+
+  echo $logpath
+
+  if not test -f "$logpath"
+      echo 'Q LOG' > "$logpath"
+  end
+
+  tail -100f -- "$logpath"
+end
+
 alias pbcopy='xclip -selection clipboard'
 alias pbcopyi="xclip -selection clipboard -t image/png -i"
 alias pbpaste='xclip -selection clipboard -o'

@@ -80,6 +80,22 @@ function device-shutdown() {
   udisksctl power-off -b "${1}"
 }
 
+function qq() {
+    clear
+
+    logpath="$TMPDIR/q"
+
+    if [[ -z "$TMPDIR" ]]; then
+        logpath="/tmp/q"
+    fi
+
+    if [[ ! -f "$logpath" ]]; then
+        echo 'Q LOG' > "$logpath"
+    fi
+
+    tail -100f -- "$logpath"
+}
+
 alias pbcopy='xclip -selection clipboard'
 alias pbcopyi="xclip -selection clipboard -t image/png -i"
 alias pbpaste='xclip -selection clipboard -o'
