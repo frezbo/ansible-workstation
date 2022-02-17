@@ -176,6 +176,16 @@
     - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}scrollback-unlimited"
       value: "true"
 
+- name: kube directory
+  file:
+    path: "/home/{{ user }}/.kube"
+    state: directory
+
+- name: kubie config
+  template:
+    src: kubie.yaml.j2
+    dest: "/home/{{ user }}/.kube/kubie.yaml"
+
 - name: gitconfig dotfiles
   template:
     src: gitconfig.j2
