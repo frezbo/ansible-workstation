@@ -2,7 +2,7 @@
   file:
     path: "/home/{{ user }}/.config/dotfiles/fzf"
     state: directory
-    mode: 0700
+    mode: 0755
     recurse: yes
     owner: "{{ user }}"
     group: "{{ user }}"
@@ -24,7 +24,7 @@
 - name: create fzf loader
   file:
     path: "/home/{{ user }}/.config/dotfiles/fzf/fzf.bash"
-    state: touch
+    state: file
     mode: 0700
     owner: "{{ user }}"
     group: "{{ user }}"

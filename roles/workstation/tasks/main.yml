@@ -45,6 +45,7 @@
       # qemu
       - qemu
       - qemu-user-static
+      - gnome-clocks
     state: latest
     update_cache: yes
 
@@ -175,6 +176,9 @@
       value: "'Fira Code weight=453 12'"
     - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}scrollback-unlimited"
       value: "true"
+    # gnome-clocks
+    - key: "/org/gnome/clocks/world-clocks"
+      value: "[{'location': <(uint32 2, <('San Francisco', 'KOAK', false, [(0.65832848982162007, -2.133408063190589)], [(0.65832848982162007, -2.133408063190589)])>)>}, {'location': <(uint32 2, <('Virginia Beach', 'KNTU', true, [(0.64264962119230173, -1.326944735652658)], [(0.64320489769382372, -1.3260659972808639)])>)>}, {'location': <(uint32 2, <('Alicante', 'LEAL', true, [(0.66817020948739825, -0.0095993108859688137)], [(0.66933376813982537, -0.0084357522335417531)])>)>}, {'location': <(uint32 2, <('Dublin', 'EIDW', false, [(0.93258759116453926, -0.1090830782496456)], [(0.93258759116453926, -0.1090830782496456)])>)>}, {'location': <(uint32 2, <('Istanbul', 'LTBA', true, [(0.71500322271810779, 0.50294571860079684)], [(0.71590981654476371, 0.505529765824837)])>)>}, {'location': <(uint32 2, <('Moscow', 'UUWW', true, [(0.97127572873484425, 0.65042604039431762)], [(0.97305983920281813, 0.65651530216830811)])>)>}, {'location': <(uint32 2, <('Dubai', 'OMDB', true, [(0.44069563612856821, 0.96574884695243146)], [(0.44073441734454749, 0.9648180105024653)])>)>}, {'location': <(uint32 2, <('Tbilisi', 'UGTB', true, [(0.72726416071336797, 0.78460791321873025)], [(0.72809319210806533, 0.78161661086702972)])>)>}]"
 
 - name: kube directory
   file:
