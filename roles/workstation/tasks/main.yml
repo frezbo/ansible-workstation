@@ -79,7 +79,7 @@
 - name: Setup Gnome extensions
   vars:
     extension_ids:
-      - 779 # clipboard indicator
+      - 4839 # gnome-clipboard-history
       - 7 # removable drive menu
       - 906 # audio switcher
   include_tasks: gnome.yml
