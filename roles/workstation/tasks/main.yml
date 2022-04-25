@@ -8,18 +8,18 @@
         repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
         key: "https://baltocdn.com/helm/signing.asc"
       - package: "kicad"
-        repo: "deb http://ppa.launchpad.net/kicad/kicad-6.0-releases/ubuntu impish main"
+        repo: "deb http://ppa.launchpad.net/kicad/kicad-6.0-releases/ubuntu jammy main"
         keyid: "245D5502FAD7A805"
         keyserver: "keyserver.ubuntu.com"
       - package: tailscale
-        repo: "deb https://pkgs.tailscale.com/stable/ubuntu impish main"
+        repo: "deb https://pkgs.tailscale.com/stable/ubuntu jammy main"
         key: "https://pkgs.tailscale.com/stable/ubuntu/impish.gpg"
       - package: code
         repo_file_name: vscode
         repo: "deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main"
         key: "https://packages.microsoft.com/keys/microsoft.asc"
       - package: docker-ce
-        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu impish stable"
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"
         key: "https://download.docker.com/linux/ubuntu/gpg"
   include_tasks: external-packages.yml
 
