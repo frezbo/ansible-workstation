@@ -158,15 +158,11 @@
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
-    # clipboard extension settings
-    - key: "/org/gnome/shell/extensions/clipboard-indicator/disable-down-arrow"
-      value: "true"
-    - key: "/org/gnome/shell/extensions/clipboard-indicator/history-size"
-      value: 100
-    - key: "/org/gnome/shell/extensions/clipboard-indicator/move-item-first"
-      value: "true"
-    - key: "/org/gnome/shell/extensions/clipboard-indicator/strip-text"
-      value: "true"
+    # clipboard-history extension settings
+    - key: "/org/gnome/shell/extensions/clipboard-history/paste-on-selection"
+      value: "false"
+    - key: "/org/gnome/shell/extensions/clipboard-history/toggle-menu"
+      value: "['<Control>F9']"
     # tilix settings
     - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}use-custom-command"
       value: "true"
