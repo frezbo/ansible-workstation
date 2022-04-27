@@ -65,9 +65,11 @@
     packages:
       - com.discordapp.Discord
       - com.slack.Slack
+      - im.riot.Riot
       - md.obsidian.Obsidian
       - org.chromium.Chromium
       - org.flameshot.Flameshot
+      - org.gnome.Calls
   include_tasks: flatpak.yml
 
 - name: Setup dotfiles
