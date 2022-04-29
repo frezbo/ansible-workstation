@@ -5,6 +5,7 @@
     state: present
     keyserver: "{{ item.keyserver | default(omit) }}"
     id: "{{ item.keyid | default(omit) }}"
+    keyring: "/etc/apt/trusted.gpg.d/{{ item.package }}.gpg"
   with_items: "{{ packages }}"
 
 - name: Add package repositories

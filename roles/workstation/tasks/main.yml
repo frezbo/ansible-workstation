@@ -13,7 +13,7 @@
         keyserver: "keyserver.ubuntu.com"
       - package: tailscale
         repo: "deb https://pkgs.tailscale.com/stable/ubuntu jammy main"
-        key: "https://pkgs.tailscale.com/stable/ubuntu/impish.gpg"
+        key: "https://pkgs.tailscale.com/stable/ubuntu/jammy.gpg"
       - package: code
         repo_file_name: vscode
         repo: "deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/code stable main"
