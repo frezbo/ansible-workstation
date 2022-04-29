@@ -35,9 +35,6 @@
       # tlp
       - tlp
       - acpi-call-dkms
-      # canond
-      - gphoto2
-      - v4l2loopback-utils
       - ffmpeg
       # docker
       - docker-ce-cli
@@ -240,9 +237,6 @@
     group: "{{ user }}"
     mode: 0750
 
-- name: setup canon webcam
-  include_tasks: canon80d.yml
-
 - name: add dialout group to user
   become: yes
   user:
@@ -250,3 +244,10 @@
     append: yes
     groups:
       - dialout
+
+- name: disable brltty udev service
+  become: yes
+  systemd:
+    name: brltty-udev.service
+    masked: yes
+    state: stopped
