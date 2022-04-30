@@ -67,7 +67,7 @@ packages:
     registry: remote
   - name: dundee/gdu@v5.13.2
     registry: remote
-  - name: davecheney/httpstat@v1.0.0-rc.1
+  - name: davecheney/httpstat@v1.1.0
     registry: remote
   - name: chrischdi/k8s-ctx-import@v0.4.1
     registry: remote
