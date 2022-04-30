@@ -57,7 +57,7 @@ packages:
     registry: remote
   - name: pete911/certinfo@v1.0.6
     registry: remote
-  - name: cilium/cilium-cli@v0.11.3
+  - name: cilium/cilium-cli@v0.11.4
     registry: remote
   - name: docker/docker-credential-helpers@v0.6.4
     registry: remote
@@ -67,7 +67,8 @@ packages:
     registry: remote
   - name: dundee/gdu@v5.13.2
     registry: remote
-  - name: davecheney/httpstat@v1.0.0-rc.1
+  - name: davecheney/httpstat
+    version: v1.0.0-rc.1
     registry: remote
   - name: chrischdi/k8s-ctx-import@v0.4.1
     registry: remote
