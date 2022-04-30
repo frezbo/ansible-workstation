@@ -15,8 +15,6 @@
   with_items:
     - url: https://raw.githubusercontent.com/frezbo/ansible-workstation/main/aqua.yaml
       dest: "/home/{{ user }}/.config/aquaproj-aqua/aqua.yaml"
-    - url: https://raw.githubusercontent.com/frezbo/ansible-workstation/main/registry.yaml
-      dest: "/home/{{ user }}/.config/aquaproj-aqua/registry.yaml"
 
 - name: Create aqua assets directory
   file:
