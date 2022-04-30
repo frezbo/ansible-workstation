@@ -86,17 +86,11 @@
 - name: Setup fzf
   include_tasks: fzf.yml
 
-- name: Setup go
-  include_tasks: golang.yml
-
 - name: Setup docker
   include_tasks: docker.yml
 
 - name: Setup node
   include_tasks: node.yml
-
-- name: Setup pulumi
-  include_tasks: pulumi.yml
 
 - name: get default tilix profile
   command:
@@ -195,36 +189,8 @@
     src: gitignore.j2
     dest: "/home/{{ user }}/.gitignore"
 
-- name: Create local bin directory
-  file:
-    path: "/home/{{ user }}/.local/bin"
-    state: directory
-    recurse: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
-
-- name: Check if bin is installed
-  stat:
-    path: "/home/{{ user }}/.local/bin/bin"
-  register: bin_exists
-
-- name: Get bin latest release
-  uri:
-    url: https://api.github.com/repos/marcosnils/bin/releases/latest
-    return_content: true
-  register: bin_latest
-  when:
-    - not bin_exists.stat.exists
-
-- name: Install bin
-  get_url:
-    url: "https://github.com/marcosnils/bin/releases/download/{{ bin_latest.json.tag_name }}/bin_{{ bin_latest.json.tag_name | replace('v', '') }}_Linux_x86_64"
-    dest: "/home/{{ user }}/.local/bin/bin"
-    owner: "{{ user }}"
-    group: "{{ user }}"
-    mode: 0755
-  when:
-    - not bin_exists.stat.exists
+- name: setup aquaproj
+  include_tasks: aqua.yml
 
 - name: setup cloud cli wrappers
   include_tasks: cloud.yml

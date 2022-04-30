@@ -1,0 +1,57 @@
+- name: Create aqua config directory
+  file:
+    path: "/home/{{ user }}/.config/aquaproj-aqua"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: Create aqua config files
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  with_items:
+    - url: https://raw.githubusercontent.com/frezbo/ansible-workstation/main/aqua.yaml
+      dest: "/home/{{ user }}/.config/aquaproj-aqua/aqua.yaml"
+    - url: https://raw.githubusercontent.com/frezbo/ansible-workstation/main/registry.yaml
+      dest: "/home/{{ user }}/.config/aquaproj-aqua/registry.yaml"
+
+- name: Create aqua assets directory
+  file:
+    path: "/home/{{ user }}/.local/share/aquaproj-aqua/bin"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: Get aqua latest release
+  uri:
+    url: https://api.github.com/repos/aquaproj/aqua/releases/latest
+    return_content: true
+  register: aqua_latest
+
+- name: Get local aqua version
+  shell: "/home/{{ user }}/.local/share/aquaproj-aqua/bin/aqua version"
+  register: aqua_local_info
+  ignore_errors: yes
+
+- name: set aqua metadata
+  set_fact:
+    aqua_remote_version: "{{ aqua_latest.json.tag_name }}"
+    aqua_download_url: "https://github.com/aquaproj/aqua/releases/download/{{ aqua_latest.json.tag_name }}/aqua_linux_amd64.tar.gz"
+    aqua_local_version: "v{{ '' if aqua_local_info.stdout == '' else aqua_local_info.stdout.split(' ')[2] }}"
+
+- name: Install aqua
+  unarchive:
+    src: "https://github.com/aquaproj/aqua/releases/download/{{ aqua_remote_version }}/aqua_linux_amd64.tar.gz"
+    dest: "/home/{{ user }}/.local/share/aquaproj-aqua/bin"
+    exclude:
+      - README.md
+      - LICENSE
+    remote_src: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0755
+  when: aqua_local_version != aqua_remote_version

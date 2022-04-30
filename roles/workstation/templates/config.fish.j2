@@ -4,6 +4,9 @@ function set_win_title
     echo -ne "\033]0; $USER@$HOSTNAME:$PWD//$HOME/\~} \007"
 end
 
+# aqua
+set -x AQUA_GLOBAL_CONFIG "/home/{{ user }}/.config/aquaproj-aqua/aqua.yaml"
+
 set starship_precmd_user_func "set_win_title"
 starship init fish | source
 
