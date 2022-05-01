@@ -13,7 +13,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
   with_items:
-    - url: https://raw.githubusercontent.com/frezbo/ansible-workstation/main/aqua.yaml
+    - url: https://raw.githubusercontent.com/frezbo/dotfiles/main/dot_config/aquaproj-aqua/aqua.yaml
       dest: "/home/{{ user }}/.config/aquaproj-aqua/aqua.yaml"
 
 - name: Create aqua assets directory

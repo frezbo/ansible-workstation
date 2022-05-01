@@ -1,4 +1,0 @@
-- name: create startship config
-  template:
-    src: starship.toml.j2
-    dest: "/home/{{ user }}/.config/starship.toml"

@@ -40,3 +40,23 @@
   template:
     src: config.fish.j2
     dest: "/home/{{ user }}/.config/fish/config.fish"
+
+- name: Create chezmoi directory
+  file:
+    path: "/home/{{ user }}/.local/share/chezmoi"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: Check if chezmoi is configured
+  stat:
+    path: "/home/{{ user }}/.local/share/chezmoi/README.md"
+  register: chezmoi_exists
+
+- name: Clone dotfiles repo
+  git:
+    repo: https://github.com/frezbo/dotfiles.git
+    dest: "/home/{{ user }}/.local/share/chezmoi"
+  when:
+    - not chezmoi_exists.stat.exists
