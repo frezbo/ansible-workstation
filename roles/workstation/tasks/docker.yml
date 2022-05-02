@@ -13,10 +13,3 @@
     dest: /etc/docker/daemon.json
   notify:
     - restart docker
-
-- name: install docker fish completion
-  get_url:
-    url: https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/fish/docker.fish
-    dest: "/home/{{ user }}/.config/fish/completions/docker.fish"
-    owner: "{{ user }}"
-    group: "{{ user }}"

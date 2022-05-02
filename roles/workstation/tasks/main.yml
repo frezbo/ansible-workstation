@@ -47,14 +47,6 @@
     state: latest
     update_cache: yes
 
-- name: Create fish completions directory
-  file:
-    path: "/home/{{ user }}/.config/fish/completions"
-    state: directory
-    recurse: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
-
 - name: setup tlp
   include_tasks: tlp.yml
 
@@ -80,9 +72,6 @@
       - 7 # removable drive menu
       - 906 # audio switcher
   include_tasks: gnome.yml
-
-- name: Setup fzf
-  include_tasks: fzf.yml
 
 - name: Setup docker
   include_tasks: docker.yml
