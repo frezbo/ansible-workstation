@@ -20,19 +20,3 @@
     dest: "/home/{{ user }}/.config/fish/completions/docker.fish"
     owner: "{{ user }}"
     group: "{{ user }}"
-
-- name: create buildkit config folder
-  file:
-    path: "/home/{{ user }}/.config/buildkitd"
-    state: directory
-    mode: 0755
-    recurse: yes
-    owner: "{{ user }}"
-    group: "{{ user }}"
-
-- name: create buildkit config
-  template:
-    src: buildkitd.toml.j2
-    dest: "/home/{{ user }}/.config/buildkitd/buildkitd.toml"
-    owner: "{{ user }}"
-    group: "{{ user }}"
