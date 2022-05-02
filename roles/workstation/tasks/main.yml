@@ -28,6 +28,7 @@
       - kazam
       - vim
       - tree
+      - picocom
       # gpg
       - scdaemon
       # fingerprint
