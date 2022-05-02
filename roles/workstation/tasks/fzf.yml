@@ -24,7 +24,7 @@
 - name: create fzf loader
   file:
     path: "/home/{{ user }}/.config/dotfiles/fzf/fzf.bash"
-    state: file
+    state: touch
     mode: 0700
     owner: "{{ user }}"
     group: "{{ user }}"

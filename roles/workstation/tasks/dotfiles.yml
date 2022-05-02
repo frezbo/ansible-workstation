@@ -41,9 +41,17 @@
     src: config.fish.j2
     dest: "/home/{{ user }}/.config/fish/config.fish"
 
-- name: Create chezmoi directory
+- name: Create chezmoi state directory
   file:
     path: "/home/{{ user }}/.local/share/chezmoi"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: Create chezmoi config directory
+  file:
+    path: "/home/{{ user }}/.config/chezmoi"
     state: directory
     recurse: yes
     owner: "{{ user }}"
@@ -58,5 +66,17 @@
   git:
     repo: https://github.com/frezbo/dotfiles.git
     dest: "/home/{{ user }}/.local/share/chezmoi"
+  when:
+    - not chezmoi_exists.stat.exists
+
+- name: Create chezmoi config file
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  with_items:
+    - url: https://raw.githubusercontent.com/frezbo/dotfiles/main/dot_config/chezmoi/chezmoi.toml
+      dest: "/home/{{ user }}/.config/chezmoi/chezmoi.toml"
   when:
     - not chezmoi_exists.stat.exists

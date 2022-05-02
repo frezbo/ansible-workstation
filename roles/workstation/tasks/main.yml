@@ -26,6 +26,9 @@
       - fonts-firacode
       - xclip
       - kazam
+      - vim
+      # gpg
+      - scdaemon
       # tlp
       - tlp
       - acpi-call-dkms

@@ -40,6 +40,8 @@
   when: node_local_version != node_remote_version
 
 - name: install yarn
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/home/{{ user }}/.local/bin/node/bin"
   npm:
     name: yarn
     global: yes
