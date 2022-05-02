@@ -30,6 +30,8 @@
       - tree
       # gpg
       - scdaemon
+      # fingerprint
+      - libpam-fprintd
       # tlp
       - tlp
       - acpi-call-dkms
