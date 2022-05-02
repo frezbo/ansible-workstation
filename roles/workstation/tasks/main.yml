@@ -42,6 +42,7 @@
       - containerd.io
       # qemu
       - qemu
+      - qemu-system
       - qemu-user-static
       - gnome-clocks
     state: latest
