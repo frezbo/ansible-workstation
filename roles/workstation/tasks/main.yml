@@ -27,6 +27,7 @@
       - xclip
       - kazam
       - vim
+      - tree
       # gpg
       - scdaemon
       # tlp
@@ -86,14 +87,6 @@
 - name: Setup node
   include_tasks: node.yml
 
-- name: get default tilix profile
-  command:
-    argv:
-      - dconf
-      - list
-      - /com/gexperts/Tilix/profiles/
-  register: tilix_profile
-
 - name: gsettings
   gsetting:
     key: "{{ item.key }}"
@@ -151,13 +144,19 @@
     - key: "/org/gnome/shell/extensions/clipboard-history/toggle-menu"
       value: "['<Control>F9']"
     # tilix settings
-    - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}use-custom-command"
+    - key: "/com/gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d/visible-name"
+      value: "'Default'"
+    - key: "/com/gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d/use-custom-command"
       value: "true"
-    - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}custom-command"
+    - key: "/com/gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d/custom-command"
       value: "'/usr/bin/fish'"
-    - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}font"
+    - key: "/com/gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d/use-system-font"
+      value: "false"
+    - key: "/com/gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d/font"
       value: "'Fira Code weight=453 12'"
-    - key: "/com/gexperts/Tilix/profiles/{{ tilix_profile.stdout }}scrollback-unlimited"
+    - key: "/com/gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d/background-transparency-percent"
+      value: "15"
+    - key: "/com/gexperts/Tilix/profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d/scrollback-unlimited"
       value: "true"
     # gnome-clocks
     - key: "/org/gnome/clocks/world-clocks"
