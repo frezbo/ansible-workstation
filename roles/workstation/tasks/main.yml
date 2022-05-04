@@ -61,6 +61,7 @@
       - org.chromium.Chromium
       - org.flameshot.Flameshot
       - org.gnome.Calls
+      - us.zoom.Zoom
   include_tasks: flatpak.yml
 
 - name: Setup dotfiles
