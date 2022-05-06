@@ -62,6 +62,7 @@
       - org.flameshot.Flameshot
       - org.gnome.Calls
       - us.zoom.Zoom
+      - md.obsidian.Obsidian
   include_tasks: flatpak.yml
 
 - name: Setup dotfiles
