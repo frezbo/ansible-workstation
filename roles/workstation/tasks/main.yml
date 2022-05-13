@@ -44,6 +44,10 @@
       - qemu
       - qemu-system
       - qemu-user-static
+      # cross-compile
+      - gcc-aarch64-linux-gnu
+      - g++-aarch64-linux-gnu
+      - binutils-aarch64-linux-gnu
       - gnome-clocks
     state: latest
     update_cache: yes
