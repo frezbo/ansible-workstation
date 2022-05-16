@@ -48,6 +48,9 @@
       - gcc-aarch64-linux-gnu
       - g++-aarch64-linux-gnu
       - binutils-aarch64-linux-gnu
+      # dev stuff
+      - libxml2-utils
+      # world time
       - gnome-clocks
     state: latest
     update_cache: yes
