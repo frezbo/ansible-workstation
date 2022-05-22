@@ -52,6 +52,8 @@
       - libxml2-utils
       # world time
       - gnome-clocks
+      - snmp
+      - ipmitool
     state: latest
     update_cache: yes
 
