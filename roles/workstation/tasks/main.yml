@@ -54,6 +54,7 @@
       - gnome-clocks
       - pax-utils
       - ipmitool
+      - rpi-imager
     state: latest
     update_cache: yes
 
