@@ -1,10 +1,3 @@
-- name: create aws wrapper
-  template:
-    src: aws.j2
-    dest: "/home/{{ user }}/.local/bin/aws"
-    owner: "{{ user }}"
-    group: "{{ user }}"
-    mode: 0750
 - name: create az wrapper
   template:
     src: az.j2
