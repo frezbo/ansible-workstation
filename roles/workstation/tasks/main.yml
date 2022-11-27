@@ -62,6 +62,9 @@
 - name: setup tlp
   include_tasks: tlp.yml
 
+- name: setup wifi randomization
+  include_tasks: networkmanager.yml
+
 - name: setup flatpaks
   vars:
     packages:
@@ -71,7 +74,6 @@
       - md.obsidian.Obsidian
       - org.chromium.Chromium
       - org.flameshot.Flameshot
-      - org.gnome.Calls
       - us.zoom.Zoom
       - md.obsidian.Obsidian
   include_tasks: flatpak.yml

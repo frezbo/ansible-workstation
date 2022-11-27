@@ -1,0 +1,8 @@
+- name: wifi mac randomization config
+  become: yes
+  template:
+    src: 00-macrandomize.conf.j2
+    dest: /etc/NetworkManager/conf.d/00-macrandomize.conf
+  notify:
+    - restart NetworkManager
+
