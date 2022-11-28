@@ -1,3 +1,11 @@
+- name: Create local bin
+  file:
+    path: "/home/{{ user }}/.local/bin"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
 - name: manage bashrc
   blockinfile:
     path: "/home/{{ user }}/.bashrc"
@@ -43,7 +51,7 @@
     owner: "{{ user }}"
     group: "{{ user }}"
   with_items:
-    - url: https://raw.githubusercontent.com/frezbo/dotfiles/main/dot_config/chezmoi/chezmoi.toml
+    - url: https://raw.githubusercontent.com/frezbo/dotfiles/main/private_dot_config/chezmoi/chezmoi.toml
       dest: "/home/{{ user }}/.config/chezmoi/chezmoi.toml"
   when:
     - not chezmoi_exists.stat.exists

@@ -97,45 +97,9 @@
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
-    - key: org.gnome.desktop.interface.clock-format
-      value: "'24h'"
     - key: org.gnome.desktop.interface.clock-show-seconds
       value: "true"
     - key: org.gnome.desktop.interface.clock-show-weekday
-      value: "true"
-    - key: org.gnome.desktop.interface.show-battery-percentage
-      value: "true"
-    - key: org.gnome.desktop.peripherals.mouse.natural-scroll
-      value: "true"
-    - key: org.gnome.desktop.peripherals.mouse.speed
-      value: "1.0"
-    - key: org.gnome.desktop.peripherals.touchpad.natural-scroll
-      value: "true"
-    - key: org.gnome.desktop.peripherals.touchpad.speed
-      value: "1.0"
-    - key: org.gnome.desktop.peripherals.touchpad.two-finger-scrolling-enabled
-      value: "true"
-    - key: org.gnome.system.location.enabled
-      value: "false"
-    - key: org.gnome.settings-daemon.plugins.power.power-button-action
-      value: "'suspend'"
-    - key: org.gnome.settings-daemon.plugins.power.sleep-inactive-ac-timeout
-      value: "1800"
-    - key: org.gnome.settings-daemon.plugins.power.sleep-inactive-ac-type
-      value: "'nothing'"
-    - key: org.gnome.settings-daemon.plugins.power.sleep-inactive-battery-timeout
-      value: "900"
-    - key: org.gnome.settings-daemon.plugins.power.sleep-inactive-battery-type
-      value: "'suspend'"
-    - key: org.gnome.shell.extensions.pop-shell.active-hint
-      value: "false"
-    - key: org.gnome.shell.extensions.pop-shell.gap-inner
-      value: "uint32 0"
-    - key: org.gnome.shell.extensions.pop-shell.gap-outer
-      value: "uint32 0"
-    - key: org.gnome.shell.extensions.pop-shell.show-title
-      value: "false"
-    - key: org.gnome.shell.extensions.pop-shell.tile-by-default
       value: "true"
 
 - name: dconf
@@ -143,6 +107,46 @@
     key: "{{ item.key }}"
     value: "{{ item.value }}"
   with_items:
+    - key: "/org/gnome/shell/extensions/dash-to-dock/extend-height"
+      value: "false"
+    - key: "/org/gnome/shell/extensions/dash-to-dock/manualhide"
+      value: "true"
+    - key: "/org/gnome/system/location/enabled"
+      value: "false"
+    - key: "/org/gnome/desktop/privacy/report-technical-problems"
+      value: "false"
+    - key: "/org/gnome/mutter/edge-tiling"
+      value: "false"
+    - key: "/org/gnome/shell/extensions/pop-shell/tile-by-default"
+      value: "true"
+    - key: "/org/gnome/shell/extensions/pop-shell/gap-inner"
+      value: "uint32 0"
+    - key: "/org/gnome/shell/extensions/pop-shell/gap-outer"
+      value: "uint32 0"
+    - key: "/org/gnome/desktop/interface/clock-format"
+      value: "'24h'"
+    - key: "/org/gtk/settings/file-chooser/clock-format"
+      value: "'24h'"
+    - key: "/org/gnome/GWeather/temperature-unit"
+      value: "'centigrade'"
+    - key: "/org/gnome/desktop/peripherals/touchpad/two-finger-scrolling-enabled"
+      value: "true"
+    - key: "/org/gnome/desktop/peripherals/mouse/natural-scroll"
+      value: "true"
+    - key: "/org/gnome/desktop/peripherals/mouse/speed"
+      value: "1.0"
+    - key: "/org/gnome/desktop/peripherals/touchpad/speed"
+      value: "1.0"
+    - key: "/org/gnome/desktop/peripherals/touchpad/natural-scroll"
+      value: "true"
+    - key: "/org/gnome/desktop/interface/show-battery-percentage"
+      value: "true"
+    - key: "/org/gnome/settings-daemon/plugins/power/power-button-action"
+      value: "'suspend'"
+    - key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-timeout"
+      value: "900"
+    - key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-type"
+      value: "'nothing'"
     # clipboard-history extension settings
     - key: "/org/gnome/shell/extensions/clipboard-history/paste-on-selection"
       value: "false"
