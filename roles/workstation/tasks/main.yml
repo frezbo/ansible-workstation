@@ -123,6 +123,8 @@
       value: "uint32 0"
     - key: "/org/gnome/shell/extensions/pop-shell/gap-outer"
       value: "uint32 0"
+    - key: "/org/gnome/shell/extensions/pop-shell/show-title"
+      value: "false"
     - key: "/org/gnome/desktop/interface/clock-format"
       value: "'24h'"
     - key: "/org/gtk/settings/file-chooser/clock-format"
