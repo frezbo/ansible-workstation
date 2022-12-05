@@ -44,6 +44,7 @@
       - qemu
       - qemu-system
       - qemu-user-static
+      - socat
       # cross-compile
       - gcc-aarch64-linux-gnu
       - g++-aarch64-linux-gnu
