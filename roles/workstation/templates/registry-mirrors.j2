@@ -25,13 +25,6 @@ case "${ACTION}" in
 
         docker container run \
             --detach \
-            --publish 5002:5000 \
-            --volume "${HOME}/.cache/registry-mirrors/quay:/var/lib/registry" \
-            --env REGISTRY_PROXY_REMOTEURL=https://quay.io \
-            --name registry-quay.io registry:2.5
-
-        docker container run \
-            --detach \
             --publish 5003:5000 \
             --volume "${HOME}/.cache/registry-mirrors/gcr:/var/lib/registry" \
             --env REGISTRY_PROXY_REMOTEURL=https://gcr.io \
@@ -57,7 +50,6 @@ case "${ACTION}" in
             --force \
             registry-docker.io \
             registry-k8s.io \
-            registry-quay.io \
             registry-gcr.io \
             registry-ghcr.io \
             registry-local
