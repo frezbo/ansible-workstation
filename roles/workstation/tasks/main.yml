@@ -2,7 +2,7 @@
   vars:
     packages:
       - package: "kicad"
-        repo: "deb https://ppa.launchpadcontent.net/kicad/kicad-6.0-releases/ubuntu/ jammy main"
+        repo: "deb https://ppa.launchpadcontent.net/kicad/kicad-7.0-releases/ubuntu/ jammy main"
         keyid: "245D5502FAD7A805"
         keyserver: "keyserver.ubuntu.com"
       - package: tailscale
