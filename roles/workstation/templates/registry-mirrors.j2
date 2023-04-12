@@ -19,9 +19,9 @@ case "${ACTION}" in
         docker container run \
             --detach \
             --publish 5001:5000 \
-            --volume "${HOME}/.cache/registry-mirrors/registry-k8s:/var/lib/registry" \
-            --env REGISTRY_PROXY_REMOTEURL=https://registry.k8s.io \
-            --name registry-k8s.io registry:2
+            --volume "${HOME}/.cache/registry-mirrors/registry-k8s-gcr:/var/lib/registry" \
+            --env REGISTRY_PROXY_REMOTEURL=https://k8s.gcr.io \
+            --name registry-k8s.gcr.io registry:2
 
         docker container run \
             --detach \
@@ -49,7 +49,7 @@ case "${ACTION}" in
         docker container rm \
             --force \
             registry-docker.io \
-            registry-k8s.io \
+            registry-k8s.gcr.io \
             registry-gcr.io \
             registry-ghcr.io \
             registry-local
