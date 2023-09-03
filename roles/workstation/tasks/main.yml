@@ -15,6 +15,10 @@
       - package: docker-ce
         repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"
         key: "https://download.docker.com/linux/ubuntu/gpg"
+      - package: fish
+        repo: "deb https://ppa.launchpadcontent.net/fish-shell/release-3/ubuntu jammy main"
+        keyid: "27557F056DC33CA5"
+        keyserver: "keyserver.ubuntu.com"
   include_tasks: external-packages.yml
 
 - name: common packages
