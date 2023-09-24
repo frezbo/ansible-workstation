@@ -15,6 +15,10 @@
   with_items:
     - url: https://raw.githubusercontent.com/frezbo/dotfiles/main/private_dot_config/aquaproj-aqua/aqua.yaml
       dest: "/home/{{ user }}/.config/aquaproj-aqua/aqua.yaml"
+    - url: https://raw.githubusercontent.com/frezbo/dotfiles/main/private_dot_config/aquaproj-aqua/registry.yaml
+      dest: "/home/{{ user }}/.config/aquaproj-aqua/registry.yaml"
+    - url: https://raw.githubusercontent.com/frezbo/dotfiles/main/private_dot_config/aquaproj-aqua/aqua-policy.yaml
+      dest: "/home/{{ user }}/.config/aquaproj-aqua/aqua-policy.yaml"
 
 - name: Create aqua assets directory
   file:

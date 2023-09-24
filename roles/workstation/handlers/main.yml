@@ -14,3 +14,9 @@
   systemd:
     name: tlp.service
     state: restarted
+
+- name: restart NetworkManager
+  become: yes
+  systemd:
+    name: NetworkManager.service
+    state: restarted
