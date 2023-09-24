@@ -15,6 +15,7 @@ Clone the repo locally:
 
 ```bash
 git clone https://github.com/frezbo/ansible-workstation.git
+git submodule update --init --recursive
 ```
 
 ```bash
@@ -31,7 +32,7 @@ gpg --card-status
 and then run:
 
 ```bash
-gpg --edit-key
+gpg --card-edit
 ```
 
 In the gpg prompt run:
