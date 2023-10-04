@@ -33,6 +33,7 @@
       - vim
       - tree
       - picocom
+      - dnsutils
       # gpg
       - scdaemon
       # fingerprint
@@ -49,6 +50,7 @@
       - qemu-system
       - qemu-user-static
       - socat
+      - swtpm
       # cross-compile
       - gcc-aarch64-linux-gnu
       - g++-aarch64-linux-gnu
